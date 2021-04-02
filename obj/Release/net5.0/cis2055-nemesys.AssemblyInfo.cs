@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-cis2055_nemesys-FCBADA7A-F50D-4B39-B898-81A7AC4DA629")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("cis2055-nemesys")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]

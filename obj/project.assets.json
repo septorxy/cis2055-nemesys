@@ -1454,24 +1454,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\liamg\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Owner\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\liamg\\source\\repos\\cis2055-nemesys\\cis2055-nemesys.csproj",
+      "projectUniqueName": "C:\\Users\\Owner\\source\\repos\\septorxy\\cis2055-nemesys\\cis2055-nemesys.csproj",
       "projectName": "cis2055-nemesys",
-      "projectPath": "C:\\Users\\liamg\\source\\repos\\cis2055-nemesys\\cis2055-nemesys.csproj",
-      "packagesPath": "C:\\Users\\liamg\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\liamg\\source\\repos\\cis2055-nemesys\\obj\\",
+      "projectPath": "C:\\Users\\Owner\\source\\repos\\septorxy\\cis2055-nemesys\\cis2055-nemesys.csproj",
+      "packagesPath": "C:\\Users\\Owner\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Owner\\source\\repos\\septorxy\\cis2055-nemesys\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\liamg\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Owner\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1536,7 +1535,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }
