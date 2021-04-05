@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Areas",
-    "\\Areas\\Identity"
+    "\\Areas\\Identity\\Pages"
   ],
-  "SelectedNode": "\\Areas\\Identity",
   "PreviewInSolutionExplorer": false
 }
