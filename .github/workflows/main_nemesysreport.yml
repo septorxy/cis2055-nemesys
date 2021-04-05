@@ -31,5 +31,5 @@ jobs:
     with:
       app-name: 'nemesysreport'
       slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_1d76a9962934467eac0e51584a216a2d }}
+      publish-profile: ${{ secrets.AzureAppService_PublishProfile_1d76a9962934467eac0e51584a216a2d }}
         package: ${{env.DOTNET_ROOT}}/myapp 
