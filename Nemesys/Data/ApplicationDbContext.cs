@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Nemesys.Models;
 
 namespace Nemesys.Data
 {
@@ -13,5 +14,6 @@ namespace Nemesys.Data
         {
             Console.WriteLine("Here");
         }
+        public DbSet<Nemesys.Models.ProjectRole> ProjectRole { get; set; }
     }
 }
