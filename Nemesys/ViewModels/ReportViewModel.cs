@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nemesys.Models
+namespace Nemesys.ViewModels
 {
-    public class Report
+    public class ReportViewModel
     {
         public int Id { get; set; }
         public DateTime ReportDate { get; set; }
@@ -17,9 +16,6 @@ namespace Nemesys.Models
         public string Status { get; set; }
         public string PhotoUrl { get; set; }
         public int Upvotes { get; set; }
-
-        public string ReporterId { get; set; }
-        public IdentityUser User { get; set; }
-
+        public UserViewModel User { get; set; }
     }
 }
