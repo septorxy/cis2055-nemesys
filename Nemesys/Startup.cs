@@ -14,6 +14,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Nemesys.Services;
+using Nemesys.Models.Interfaces;
+using Nemesys.Models.Repository;
 
 namespace Nemesys
 {
@@ -40,6 +42,7 @@ namespace Nemesys
             services.AddControllersWithViews();
             
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<INemesysRepository,  NemesysRepository>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddControllersWithViews();
 
@@ -77,3 +80,5 @@ namespace Nemesys
         }
     }
 }
+
+            
