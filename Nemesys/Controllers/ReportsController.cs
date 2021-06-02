@@ -53,8 +53,8 @@ namespace Nemesys.Controllers
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
                         {
-                            Id = post.ReporterId,
-                            UserName = (_userManager.FindByIdAsync(post.ReporterId).Result != null) ? _userManager.FindByIdAsync(post.ReporterId).Result.UserName : "Anonymous"
+                            Id = post.UserId,
+                            UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
                         }
                     };
                     return View(model);
@@ -84,7 +84,7 @@ namespace Nemesys.Controllers
                     //Then persist using a new name for consistency (e.g. new Guid)
                     var extension = "." + newReport.ImageToUpload.FileName.Split('.')[newReport.ImageToUpload.FileName.Split('.').Length - 1];
                     fileName = Guid.NewGuid().ToString() + extension;
-                    var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\blogposts\\" + fileName;
+                    var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + fileName;
                     using (var bits = new FileStream(path, FileMode.Create))
                     {
                         newReport.ImageToUpload.CopyTo(bits);
@@ -96,9 +96,9 @@ namespace Nemesys.Controllers
                     Type = newReport.Type,
                     Description = newReport.Description,
                     ReportDate = DateTime.UtcNow,
-                    PhotoUrl = "/images/blogposts/" + fileName,
+                    PhotoUrl = "/images/reports/" + fileName,
                     Upvotes = 0,
-                    ReporterId = _userManager.GetUserId(User)
+                    UserId = _userManager.GetUserId(User)
                 };
 
                 _nemesysRepository.CreateBlogPost(report);
