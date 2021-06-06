@@ -46,13 +46,13 @@ namespace Nemesys.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Display(Name = "Username")]
-            public string UserName { get; set; }
-
-            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -73,42 +73,51 @@ namespace Nemesys.Areas.Identity.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-        {    
+        {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+                var userCheck = await _userManager.FindByEmailAsync(Input.Email);
+
+                if (userCheck == null)
                 {
-                    _userManager.AddToRoleAsync(user, "User").Wait();
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    var result = await _userManager.CreateAsync(user, Input.Password);
+                    if (result.Succeeded)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        _userManager.AddToRoleAsync(user, "User").Wait();
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                    else
+                    foreach (var error in result.Errors)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, "Email already exists");
                 }
             }
 
