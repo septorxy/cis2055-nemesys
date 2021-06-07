@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User) && (this.User.IsInRole("Investigator") || this.User.IsInRole("Admin")))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Index">Reports</a>
+        </li>
+    }
+
+</ul>

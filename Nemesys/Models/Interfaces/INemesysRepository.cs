@@ -13,6 +13,7 @@ namespace Nemesys.Models.Interfaces
 
         IEnumerable<IdentityUser> GetAllUsers();
         IdentityUser GetUserById(string userId);
+        IdentityUser GetUserByUsername(string user);
         void CreateBlogPost(Report newReport);
         void UpdateBlogPost(Report updatedReport);
     }

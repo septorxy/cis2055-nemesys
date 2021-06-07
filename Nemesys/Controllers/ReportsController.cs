@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
@@ -66,12 +67,14 @@ namespace Nemesys.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create([Bind("Description, Type, ImageToUpload")] EditReportViewModel newReport)
         {

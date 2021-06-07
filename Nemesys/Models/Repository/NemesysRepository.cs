@@ -44,6 +44,11 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Users.FirstOrDefault(a => a.Id == userId);
         }
 
+        public IdentityUser GetUserByUsername(string user)
+        {
+            return _appDbContext.Users.FirstOrDefault(a => a.UserName == user);
+        }
+
         public void UpdateBlogPost(Report updatedReport)
         {
             throw new NotImplementedException();
