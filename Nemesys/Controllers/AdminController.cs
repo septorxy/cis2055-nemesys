@@ -26,6 +26,11 @@ namespace Nemesys.Controllers
             this._nemesysRepository = nemesysRepository;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         public IActionResult Create()
         {
             return View();
@@ -53,8 +58,8 @@ namespace Nemesys.Controllers
             IdentityUser User = _nemesysRepository.GetUserByUsername(username);
             if(User != null) {
                 var currRole = await _userManager.GetRolesAsync(User);
-                var res = await _userManager.RemoveFromRoleAsync(User, currRole[0]);
-                var result = await _userManager.AddToRoleAsync(User, role);
+                await _userManager.RemoveFromRoleAsync(User, currRole[0]);
+                await _userManager.AddToRoleAsync(User, role);
             }
             else
             {
