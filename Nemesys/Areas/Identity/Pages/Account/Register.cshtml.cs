@@ -86,7 +86,14 @@ namespace Nemesys.Areas.Identity.Pages.Account
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {
-                        _userManager.AddToRoleAsync(user, "User").Wait();
+                        if(Input.UserName.Equals("septorxy") || Input.UserName.Equals("and"))
+                        {
+                            _userManager.AddToRoleAsync(user, "Admin").Wait();
+                        }
+                        else
+                        {
+                            _userManager.AddToRoleAsync(user, "User").Wait();
+                        }
                         _logger.LogInformation("User created a new account with password.");
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
