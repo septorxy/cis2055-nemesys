@@ -11,4 +11,11 @@
     </div>
 </div>
 
-<a asp-controller="Report" asp-action="Index" class="btn btn-primary">Back to list</a>
+<div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Investigator"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-controller="Report" asp-action="Index" class="btn btn-primary">Back to list</a>
+        <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id" class="btn btn-primary">Investigate</a>
+    }
+</div>
