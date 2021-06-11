@@ -18,7 +18,13 @@ namespace Nemesys.Models.Repository
             _appDbContext = appDbContext;
         }
 
-        public void CreateBlogPost(Report newReport)
+        public void CreateInvestigation(Investigation newInvestigation)
+        {
+            _appDbContext.Investigations.Add(newInvestigation);
+            _appDbContext.SaveChanges();
+        }
+
+        public void CreateReport(Report newReport)
         {
             _appDbContext.Reports.Add(newReport);
             _appDbContext.SaveChanges();
@@ -49,7 +55,7 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Users.FirstOrDefault(a => a.UserName == user);
         }
 
-        public void UpdateBlogPost(Report updatedReport)
+        public void UpdateReport(Report updatedReport)
         {
             throw new NotImplementedException();
         }

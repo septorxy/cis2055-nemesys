@@ -62,7 +62,7 @@ namespace Nemesys.Controllers
                 }
             }
             catch (Exception ex)
-            {
+            { 
                 return View("Error");
             }
         }
@@ -99,12 +99,12 @@ namespace Nemesys.Controllers
                     Type = newReport.Type,
                     Description = newReport.Description,
                     ReportDate = DateTime.UtcNow,
-                    PhotoUrl = "/images/reports/" + fileName,
+                    PhotoUrl = " /images/reports/" + fileName,
                     Upvotes = 0,
                     UserId = _userManager.GetUserId(User)
                 };
 
-                _nemesysRepository.CreateBlogPost(report);
+                _nemesysRepository.CreateReport(report);
                 return RedirectToAction("Index");
             }
             else

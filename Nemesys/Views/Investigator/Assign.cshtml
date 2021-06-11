@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <h1>Assign</h1>
 
 <h4>Edit User Roles</h4>
@@ -23,7 +24,6 @@
                 <select asp-for="Role" class="form-control">
                     <option value="User">User</option>
                     <option value="Investigator">Investigator</option>
-                    <option value="Admin">Admin</option>
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>

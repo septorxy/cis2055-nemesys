@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Nemesys.ViewModels
 {
-    public class EditUserRole
+    public class EditUserRoleViewModel
     {
         [Key]
         public string UserName { get; set; }

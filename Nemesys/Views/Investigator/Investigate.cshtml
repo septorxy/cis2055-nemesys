@@ -1,0 +1,88 @@
+﻿@model Nemesys.ViewModels.InvestigateViewModel
+
+@{
+    ViewData["Title"] = "Investigate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Investigate</h1>
+
+<h4>InvestigateViewModel</h4>
+<hr />
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.ReportDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.ReportDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.HazardDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.HazardDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Location)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.PhotoUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.PhotoUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Report.Upvotes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Report.Upvotes)
+        </dd>
+    </dl>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Investigate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfAction" class="control-label"></label>
+                <input asp-for="DateOfAction" class="form-control" />
+                <span asp-validation-for="DateOfAction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
