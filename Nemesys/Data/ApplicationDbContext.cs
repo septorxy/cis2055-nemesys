@@ -14,12 +14,12 @@ namespace Nemesys.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-           //:)
+            //:)
         }
         public DbSet<ProjectRole> ProjectRole { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<ReportViewModel> ReportViewModel { get; set; }
-        public DbSet<Nemesys.ViewModels.EditUserRole> EditUserRole { get; set; }
+
+        public DbSet<Investigation> Investigations { get;set;}
 
     }
 }

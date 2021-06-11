@@ -15,7 +15,7 @@
     @if (SignInManager.IsSignedIn(User) && (role.Equals("Admin") || role.Equals("Investigator")))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Index">Investigator</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Investigator" asp-action="Index">Investigator</a>
         </li>
 
         if (role.Equals("Admin"))
