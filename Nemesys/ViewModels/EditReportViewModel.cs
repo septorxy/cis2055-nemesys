@@ -13,8 +13,16 @@ namespace Nemesys.ViewModels
         [StringLength(1500, ErrorMessage = "Report must not be longer than 1500 characters")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [StringLength(1000, ErrorMessage = "Type needs to be short")]
         public string Type { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        [StringLength(1000, ErrorMessage = "Too many characters entered for field: Location")]
+        public string Location { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        public DateTime HazardDate { get; set; }
 
         public string PhotoUrl { get; set; }
         [Display(Name = "Image")]

@@ -76,7 +76,7 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create([Bind("Description, Type, ImageToUpload")] EditReportViewModel newReport)
+        public IActionResult Create([Bind("Description, Type, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
         {
             if (ModelState.IsValid)
             {
@@ -98,6 +98,8 @@ namespace Nemesys.Controllers
                 {
                     Type = newReport.Type,
                     Description = newReport.Description,
+                    Location = newReport.Location,
+                    HazardDate = newReport.HazardDate,
                     ReportDate = DateTime.UtcNow,
                     PhotoUrl = " /images/reports/" + fileName,
                     Upvotes = 0,
