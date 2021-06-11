@@ -18,7 +18,8 @@ namespace Nemesys.Data
         }
         public DbSet<ProjectRole> ProjectRole { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<Nemesys.ViewModels.ReportViewModel> ReportViewModel { get; set; }
+        public DbSet<ReportViewModel> ReportViewModel { get; set; }
+        public DbSet<Nemesys.ViewModels.EditUserRole> EditUserRole { get; set; }
 
     }
 }

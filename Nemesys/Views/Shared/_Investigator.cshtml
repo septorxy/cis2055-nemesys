@@ -1,0 +1,32 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{       
+    var role = "Anonymous";
+    if (SignInManager.IsSignedIn(User)) {
+        var UserAcc = await UserManager.FindByNameAsync(User.Identity.Name);
+        var roleAcc = await UserManager.GetRolesAsync(UserAcc);
+        role = roleAcc[0];
+    }
+}
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User) && (role.Equals("Admin") || role.Equals("Investigator")))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Index">Investigator</a>
+        </li>
+
+        if (role.Equals("Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+            </li>
+
+        }
+
+    }
+
+
+</ul>
