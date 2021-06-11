@@ -1,79 +1,21 @@
-﻿@model Nemesys.ViewModels.ReportViewModel
-@*@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager*@
+@model Nemesys.ViewModels.ReportViewModel
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-
-    <div>
-        <h4>ReportViewModel</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ReportDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ReportDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.HazardDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.HazardDate)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Location)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Location)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Type)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Type)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Status)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhotoUrl)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhotoUrl)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Upvotes)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Upvotes)
-            </dd>
-        </dl>
+<h1>@Model.Type at @Model.Location</h1>
+<div class="card" style="width: 90%;padding:20px; margin:20px;">
+    <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type" />
+    <div class="card-body">
+        <h3 class="card-title">Hazard Type: @Model.Type</h3>
+        <p class="card-text">@Model.Description</p>
+        <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
+        <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>
     </div>
-    <div>
+</div>
 
-        @if (User.IsInRole("Admin") || User.IsInRole("Investigator"))
-        {
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <p></p>
-            <a asp-action="Index">Back to List</a> <p></p>
-            <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id">Investigate</a><p></p>
-        }
-    </div>
-</body>
-</html>
+<div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Investigator"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-controller="Report" asp-action="Index" class="btn btn-primary">Back to list</a>
+        <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id" class="btn btn-primary">Investigate</a>
+    }
+</div>
