@@ -45,13 +45,12 @@ namespace Nemesys.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult HallOfFame()
+        public IActionResult Hall_Of_Fame()
         {
-            var model = new ReportListViewModel()
+            var model = new UserListViewModel()
             {
-                //The Top 3 People who have most reports
-                //TotalEntries = 3,
-                //Reports = _nemesysRepository.getTopThree()
+                TotalEntries = 3,
+                Users = _nemesysRepository.GetTopThree()
             };
             return View(model);
         }

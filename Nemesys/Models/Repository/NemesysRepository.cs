@@ -92,7 +92,7 @@ namespace Nemesys.Models.Repository
 
         IEnumerable<AppUser> INemesysRepository.GetTopThree()
         {
-            throw new NotImplementedException();
+            return _appDbContext.Users.OrderByDescending(u => u.TotalReports).Take(3);
         }
     }
 }
