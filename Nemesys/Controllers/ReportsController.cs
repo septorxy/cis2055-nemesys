@@ -107,6 +107,8 @@ namespace Nemesys.Controllers
                 };
 
                 _nemesysRepository.CreateReport(report);
+                var user = _nemesysRepository.GetUserByUsername(User.Identity.Name);
+                _nemesysRepository.UpdateTotalReports(user, 1);
                 return RedirectToAction("Index");
             }
             else

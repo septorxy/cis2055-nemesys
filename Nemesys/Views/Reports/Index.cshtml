@@ -11,13 +11,13 @@
 <div class="row">
     @foreach (var report in Model.Reports)
     {
-        <div class="card" style="width: 18rem;padding:20px; margin:20px;">
-            <img class="card-img-top" src="@report.PhotoUrl" alt="Image for @report.Description" />
-            <div class="card-body">
-                <h3 class="card-title">@report.Description</h3>
-                <p class="small">@report.ReportDate.ToShortDateString() by @report.User.UserName</p>
-                <a asp-controller="Reports" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
-            </div>
+    <div class="card" style="width: 18rem;padding:20px; margin:20px;">
+        <div class="card-body">
+            <h3 class="card-title">@report.Description</h3>
+            <p class="small">@report.ReportDate.ToShortDateString() by @report.User.UserName</p>
         </div>
+        <img class="card-img-top" src="@report.PhotoUrl" alt="Image for @report.Description" />
+        <a asp-controller="Reports" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
+    </div>
     }
 </div>

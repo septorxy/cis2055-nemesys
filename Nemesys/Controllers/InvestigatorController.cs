@@ -15,9 +15,9 @@ namespace Nemesys.Controllers
     public class InvestigatorController : Controller
     {
         private readonly INemesysRepository _nemesysRepository;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public InvestigatorController(INemesysRepository nemesysRepository, UserManager<IdentityUser> userManager)
+        public InvestigatorController(INemesysRepository nemesysRepository, UserManager<AppUser> userManager)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;
@@ -87,7 +87,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         public async Task<IActionResult> Assign(string role, string username)
         {
-            IdentityUser User = _nemesysRepository.GetUserByUsername(username);
+            AppUser User = _nemesysRepository.GetUserByUsername(username);
             if (User != null)
             {
                 var currRole = await _userManager.GetRolesAsync(User);

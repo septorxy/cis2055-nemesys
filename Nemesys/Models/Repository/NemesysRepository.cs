@@ -45,12 +45,6 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(p => p.Id == reportId);
         }
 
-        public IEnumerable<Report> GetTopThree()
-        {
-            var Reports = _appDbContext.Reports;
-            return Reports;
-        }
-
         public AppUser GetUserById(string userId)
         {
             return _appDbContext.Users.FirstOrDefault(a => a.Id == userId);
@@ -84,6 +78,21 @@ namespace Nemesys.Models.Repository
             
                 throw;
             }
+        }
+
+        public void UpdateTotalReports(AppUser User, int amount)
+        {
+            var result = _appDbContext.Users.SingleOrDefault(b => b.Id == User.Id);
+            if (result != null)
+            {
+                result.TotalReports = result.TotalReports + amount;
+                _appDbContext.SaveChanges();
+            }
+        }
+
+        IEnumerable<AppUser> INemesysRepository.GetTopThree()
+        {
+            throw new NotImplementedException();
         }
     }
 }
