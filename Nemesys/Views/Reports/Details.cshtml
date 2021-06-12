@@ -1,7 +1,8 @@
+@using Microsoft.AspNetCore.Identity﻿
+@model Nemesys.ViewModels.ReportViewModel
+@inject UserManager<IdentityUser> UserManager
 
-﻿@model Nemesys.ViewModels.ReportViewModel
-
-<h1>@Model.Type at @Model.Location</h1>
+<h1>@Model.Type at  @Model.Location</h1>
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
     <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type" />
     <div class="card-body">
@@ -15,12 +16,11 @@
 <div>
     @if (User.IsInRole("Admin") || User.IsInRole("Investigator"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-        <a asp-controller="Report" asp-action="Index" class="btn btn-primary">Back to list</a>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-primary">Back to list</a>
         <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id" class="btn btn-primary">Investigate</a>
+        @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
+        {<a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>}
     }
-<<<<<<< HEAD
 </div>
-=======
-</div>
->>>>>>> Report-Branch
+
+

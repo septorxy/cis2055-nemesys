@@ -57,7 +57,27 @@ namespace Nemesys.Models.Repository
 
         public void UpdateReport(Report updatedReport)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var currReport = _appDbContext.Reports.SingleOrDefault(rp => rp.Id == updatedReport.Id);
+                if (currReport != null)
+                {
+                    currReport.Type = updatedReport.Type;
+                    currReport.Description = updatedReport.Description;
+                    currReport.HazardDate = updatedReport.HazardDate;
+                    currReport.PhotoUrl = updatedReport.PhotoUrl;
+                    currReport.Location = updatedReport.Location;
+                    currReport.UserId = updatedReport.UserId;
+
+                    _appDbContext.Entry(currReport).State = EntityState.Modified;
+                    _appDbContext.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+            
+                throw;
+            }
         }
     }
 }

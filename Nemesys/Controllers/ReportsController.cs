@@ -113,6 +113,127 @@ namespace Nemesys.Controllers
                 return View(newReport);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var report = _nemesysRepository.GetReportById(id);
+                if (report != null)
+                {
+                    //Check if the current user has access to this resource
+                    var currentUser = await _userManager.GetUserAsync(User);
+                    if (report.User.Id == currentUser.Id)
+                    {
+                        EditReportViewModel model = new EditReportViewModel()
+                        {
+                            Id = report.Id,
+                            Type = report.Type,
+                            Description = report.Description,
+                            PhotoUrl = report.PhotoUrl,
+                            HazardDate = report.HazardDate,
+                            Location = report.Location
+                        };
+
+                        //Load all categories and create a list of CategoryViewModel
+                        //var categoryList = _nemesysRepository.GetAllCategories().Select(c => new CategoryViewModel()
+                        //{
+                        //    Id = c.Id,
+                        //    Name = c.Name
+                        //}).ToList();
+
+                        //Attach to view model - view will pre-select according to the value in CategoryId
+                        //model.CategoryList = categoryList;
+
+                        return View(model);
+                    }
+                    else
+                        return Unauthorized();
+                }
+                else
+                    return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, Type, Description, ImageToUpload, HazardDate, Location")] EditReportViewModel editedReport)
+        {
+            try
+            {
+                var modelToUpdate = _nemesysRepository.GetReportById(id);
+                if (modelToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                //Check if the current user has access to this resource
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (modelToUpdate.User.Id == currentUser.Id)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        string photoUrl = "";
+
+                        if (editedReport.ImageToUpload != null)
+                        {
+                            string fileName = "";
+                            //At this point you should check size, extension etc...
+                            //Then persist using a new name for consistency (e.g. new Guid)
+                            var extension = "." + editedReport.ImageToUpload.FileName.Split('.')[editedReport.ImageToUpload.FileName.Split('.').Length - 1];
+                            fileName = Guid.NewGuid().ToString() + extension;
+                            var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + fileName;
+                            using (var bits = new FileStream(path, FileMode.Create))
+                            {
+                                editedReport.ImageToUpload.CopyTo(bits);
+                            }
+                            photoUrl = "/images/reports/" + fileName;
+                        }
+                        else
+                           photoUrl = modelToUpdate.PhotoUrl;
+
+                        modelToUpdate.Type = editedReport.Type;
+                        modelToUpdate.Description = editedReport.Description;
+                        modelToUpdate.PhotoUrl = photoUrl;
+                        modelToUpdate.HazardDate = editedReport.HazardDate;
+                        modelToUpdate.Location = editedReport.Location;
+                        modelToUpdate.UserId = _userManager.GetUserId(User);
+
+                        _nemesysRepository.UpdateReport(modelToUpdate);
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                        return Unauthorized(); //or redirect to error controller with 401/403 actions
+                }
+                else
+                {
+                    //Load all categories and create a list of CategoryViewModel
+                    //var categoryList = _nemesysRepository.GetAllCategories().Select(c => new CategoryViewModel()
+                    //{
+                       // Id = c.Id,
+                       // Name = c.Name
+                   // }).ToList();
+
+                    //Re-attach to view model before sending back to the View (this is necessary so that the View can repopulate the drop down and pre-select according to the CategoryId
+                    //editedReport.CategoryList = categoryList;
+
+                    return View(editedReport);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+        }
+
     }
 }
 
