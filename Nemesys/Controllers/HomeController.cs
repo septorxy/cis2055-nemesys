@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Nemesys.Models;
+using Nemesys.Models.Interfaces;
+using Nemesys.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,9 +16,11 @@ namespace Nemesys.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
-        public HomeController(ILogger<HomeController> logger)
+        private readonly INemesysRepository _nemesysRepository;
+
+        public HomeController(ILogger<HomeController> logger, INemesysRepository nemesysRepository)
         {
+            _nemesysRepository = nemesysRepository;
             _logger = logger;
         }
         
@@ -39,6 +43,17 @@ namespace Nemesys.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult HallOfFame()
+        {
+            var model = new ReportListViewModel()
+            {
+                //The Top 3 People who have most reports
+                //TotalEntries = 3,
+                //Reports = _nemesysRepository.getTopThree()
+            };
+            return View(model);
         }
     }
 }

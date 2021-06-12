@@ -14,6 +14,6 @@ namespace Nemesys.Models
         public int ReportId { get; set; } 
         public Report Report { get; set; }
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public AppUser User { get; set; }
     }   
 }

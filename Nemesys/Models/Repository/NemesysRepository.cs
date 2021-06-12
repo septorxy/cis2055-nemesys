@@ -35,7 +35,7 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Reports.Include(b => b.User).OrderBy(b => b.ReportDate);
         }
 
-        public IEnumerable<IdentityUser> GetAllUsers()
+        public IEnumerable<AppUser> GetAllUsers()
         {
             return _appDbContext.Users;
         }
@@ -45,12 +45,18 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(p => p.Id == reportId);
         }
 
-        public IdentityUser GetUserById(string userId)
+        public IEnumerable<Report> GetTopThree()
+        {
+            var Reports = _appDbContext.Reports;
+            return Reports;
+        }
+
+        public AppUser GetUserById(string userId)
         {
             return _appDbContext.Users.FirstOrDefault(a => a.Id == userId);
         }
 
-        public IdentityUser GetUserByUsername(string user)
+        public AppUser GetUserByUsername(string user)
         {
             return _appDbContext.Users.FirstOrDefault(a => a.UserName == user);
         }

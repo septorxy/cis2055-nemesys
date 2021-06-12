@@ -14,11 +14,11 @@ namespace Nemesys.Controllers
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly INemesysRepository _nemesysRepository;
 
-        public AdminController(INemesysRepository nemesysRepository, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AdminController(INemesysRepository nemesysRepository, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             this._roleManager = roleManager;
             this._userManager = userManager;
@@ -55,7 +55,7 @@ namespace Nemesys.Controllers
         [HttpPost]
         public async Task<IActionResult> Assign(string role, string username)
         {
-            IdentityUser User = _nemesysRepository.GetUserByUsername(username);
+            AppUser User = _nemesysRepository.GetUserByUsername(username);
             if(User != null) {
                 var currRole = await _userManager.GetRolesAsync(User);
                 await _userManager.RemoveFromRoleAsync(User, currRole[0]);

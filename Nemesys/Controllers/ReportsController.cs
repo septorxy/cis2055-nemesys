@@ -15,9 +15,9 @@ namespace Nemesys.Controllers
     public class ReportsController : Controller
     {   
         private readonly INemesysRepository _nemesysRepository;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ReportsController(INemesysRepository nemesysRepository, UserManager<IdentityUser> userManager)
+        public ReportsController(INemesysRepository nemesysRepository, UserManager<AppUser> userManager)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;

@@ -18,7 +18,7 @@ namespace Nemesys.Models
         public string PhotoUrl { get; set; }
         public int Upvotes { get; set; }
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public AppUser User { get; set; }
 
     }
 }

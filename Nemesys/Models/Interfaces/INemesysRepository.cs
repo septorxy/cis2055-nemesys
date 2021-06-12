@@ -11,11 +11,12 @@ namespace Nemesys.Models.Interfaces
         IEnumerable<Report> GetAllReports();
         Report GetReportById(int ReportId);
 
-        IEnumerable<IdentityUser> GetAllUsers();
-        IdentityUser GetUserById(string userId);
-        IdentityUser GetUserByUsername(string user);
+        IEnumerable<AppUser> GetAllUsers();
+        AppUser GetUserById(string userId);
+        AppUser GetUserByUsername(string user);
         void CreateReport(Report newReport);
         void UpdateReport(Report updatedReport);
         void CreateInvestigation(Investigation newInvestigation);
+        IEnumerable<Report> GetTopThree();
     }
 }
