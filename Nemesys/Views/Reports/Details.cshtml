@@ -18,8 +18,12 @@
     {
         <a asp-controller="Reports" asp-action="Index" class="btn btn-primary">Back to list</a>
         <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id" class="btn btn-primary">Investigate</a>
-        @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
-        {<a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>}
+
+    }
+    @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
+    {
+        <a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-controller="Reports" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary">Delete</a>
     }
 </div>
 

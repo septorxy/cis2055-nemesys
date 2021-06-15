@@ -20,5 +20,7 @@ namespace Nemesys.Models.Interfaces
         IEnumerable<AppUser> GetTopThree();
         void UpdateTotalReports(AppUser User, int amount);
 
+        void DeleteReport(Report deletedReport);
+
     }
 }

@@ -236,6 +236,45 @@ namespace Nemesys.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, EditReportViewModel deletedReport)
+        {
+            try
+            {
+                var modelToDelete = _nemesysRepository.GetReportById(id);
+                if (modelToDelete == null)
+                {
+                    return NotFound();
+                }
+
+                //Check if the current user has access to this resource
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (modelToDelete.User.Id == currentUser.Id)
+                {
+                   
+                        _nemesysRepository.UpdateTotalReports(modelToDelete.User, -1);
+                        modelToDelete.User = null;
+                        modelToDelete.UserId = null;
+                        _nemesysRepository.DeleteReport(modelToDelete);
+
+                        return RedirectToAction("Index");
+
+                   
+                }
+                else
+                {
+
+                    return View(deletedReport);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+        }
+
     }
 }
 
