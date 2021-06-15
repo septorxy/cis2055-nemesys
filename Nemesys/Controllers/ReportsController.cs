@@ -290,6 +290,103 @@ namespace Nemesys.Controllers
                 return View("Error");
             }
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, EditReportViewModel deletedReport)
+        {
+            try
+            {
+                var modelToDelete = _nemesysRepository.GetReportById(id);
+                if (modelToDelete == null)
+                {
+                    return NotFound();
+                }
+
+                //Check if the current user has access to this resource
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (modelToDelete.User.Id == currentUser.Id)
+                {
+
+                    System.IO.File.Delete(modelToDelete.PhotoUrl);
+                        _nemesysRepository.UpdateTotalReports(modelToDelete.User, -1);
+                        modelToDelete.User = null;
+                        modelToDelete.UserId = null;
+                        _nemesysRepository.DeleteReport(modelToDelete);
+
+                        return RedirectToAction("Index");
+
+                   
+                }
+                else
+                {
+
+                    return View(deletedReport);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Upvote(int id)
+        {
+            try
+            {
+                var modelToUpvote = _nemesysRepository.GetReportById(id);
+                if (modelToUpvote == null)
+                {
+                    return NotFound();
+                }
+
+                //Check if the current user has access to this resource
+                var currentUser = await _userManager.GetUserAsync(User);
+            
+                modelToUpvote.Upvotes++;
+                _nemesysRepository.UpdateReport(modelToUpvote);
+                return RedirectToAction("Details", new { Id = id });
+
+                
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Downvote(int id)
+        {
+            try
+            {
+                var modelToDownvote = _nemesysRepository.GetReportById(id);
+                if (modelToDownvote == null)
+                {
+                    return NotFound();
+                }
+
+                //Check if the current user has access to this resource
+                var currentUser = await _userManager.GetUserAsync(User);
+
+                modelToDownvote.Upvotes--;
+                _nemesysRepository.UpdateReport(modelToDownvote);
+                return RedirectToAction("Details", new { Id = id });
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+        }
+
     }
 }
 

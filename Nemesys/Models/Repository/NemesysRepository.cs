@@ -153,5 +153,11 @@ namespace Nemesys.Models.Repository
         {
             return _appDbContext.Users.OrderByDescending(u => u.TotalReports).Take(3);
         }
+
+        public void DeleteReport(Report deletedReport)
+        {
+            _appDbContext.Remove(deletedReport);
+            _appDbContext.SaveChanges();
+        }
     }
 }

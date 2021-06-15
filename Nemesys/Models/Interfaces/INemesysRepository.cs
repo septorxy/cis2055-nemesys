@@ -28,5 +28,7 @@ namespace Nemesys.Models.Interfaces
 
         Type GetTypeById(int Id);
         Status GetStatusById(int Id);
+        void DeleteReport(Report deletedReport);
+
     }
 }
