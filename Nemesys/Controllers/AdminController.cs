@@ -31,13 +31,13 @@ namespace Nemesys.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public IActionResult CreateRole()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectRole role)
+        public async Task<IActionResult> CreateRole(ProjectRole role)
         {
             var roleExist = await _roleManager.RoleExistsAsync(role.RoleName);
             if (!roleExist)
@@ -47,6 +47,7 @@ namespace Nemesys.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Assign()
         {
             return View();

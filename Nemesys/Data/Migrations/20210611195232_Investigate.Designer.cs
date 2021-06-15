@@ -316,7 +316,7 @@ namespace Nemesys.Data.Migrations
                     b.ToTable("EditUserRole");
                 });
 
-            modelBuilder.Entity("Nemesys.ViewModels.InvestigateViewModel", b =>
+            modelBuilder.Entity("Nemesys.ViewModels.NewInvestigationViewModel", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -334,7 +334,7 @@ namespace Nemesys.Data.Migrations
 
                     b.HasIndex("ReportId");
 
-                    b.ToTable("InvestigateViewModel");
+                    b.ToTable("NewInvestigationViewModel");
                 });
 
             modelBuilder.Entity("Nemesys.ViewModels.ReportViewModel", b =>
@@ -468,7 +468,7 @@ namespace Nemesys.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Nemesys.ViewModels.InvestigateViewModel", b =>
+            modelBuilder.Entity("Nemesys.ViewModels.NewInvestigationViewModel", b =>
                 {
                     b.HasOne("Nemesys.ViewModels.ReportViewModel", "Report")
                         .WithMany()

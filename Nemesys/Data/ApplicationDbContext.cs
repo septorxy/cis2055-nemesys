@@ -20,6 +20,5 @@ namespace Nemesys.Data
         public DbSet<Report> Reports { get; set; }
 
         public DbSet<Investigation> Investigations { get;set;}
-
     }
 }

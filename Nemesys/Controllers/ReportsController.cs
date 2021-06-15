@@ -37,8 +37,42 @@ namespace Nemesys.Controllers
             try
             {
                 var post = _nemesysRepository.GetReportById(id);
+                var investigation = _nemesysRepository.GetInvestigationByReport(id);
                 if (post == null)
                     return NotFound();
+                else if (investigation != null)
+                {
+                    var investigatorUser = _nemesysRepository.GetUserById(investigation.UserId);
+                    var model = new ReportViewModel()
+                    {
+                        Id = post.Id,
+                        ReportDate = post.ReportDate,
+                        HazardDate = post.HazardDate,
+                        Location = post.Location,
+                        Type = post.Type,
+                        Description = post.Description,
+                        Status = post.Status,
+                        PhotoUrl = post.PhotoUrl,
+                        Upvotes = post.Upvotes,
+                        User = new UserViewModel()
+                        {
+                            Id = post.UserId,
+                            UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
+                        },
+                        Investigation = new ViewInvestigationViewModel
+                        {
+                            Id = investigation.Id,
+                            DateOfAction = investigation.DateOfAction,
+                            Description = investigation.Description,
+                            Investigator = new UserViewModel()
+                            {
+                                UserName = investigatorUser.UserName,
+                                Email = investigatorUser.Email
+                            }
+                        }
+                    };
+                    return View(model);
+                }
                 else
                 {
                     var model = new ReportViewModel()
@@ -56,6 +90,10 @@ namespace Nemesys.Controllers
                         {
                             Id = post.UserId,
                             UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
+                        },
+                        Investigation = new ViewInvestigationViewModel
+                        {
+                            Id = -1
                         }
                     };
                     return View(model);
@@ -235,7 +273,6 @@ namespace Nemesys.Controllers
                 return View("Error");
             }
         }
-
     }
 }
 

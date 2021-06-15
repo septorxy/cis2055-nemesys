@@ -1,4 +1,4 @@
-﻿@model Nemesys.ViewModels.InvestigateViewModel
+﻿@model Nemesys.ViewModels.NewInvestigationViewModel
 
 @{
     ViewData["Title"] = "Investigate";
@@ -9,61 +9,18 @@
 
 <h4>InvestigateViewModel</h4>
 <hr />
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.ReportDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.ReportDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.HazardDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.HazardDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Location)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Type)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Type)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.PhotoUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.PhotoUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Report.Upvotes)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Report.Upvotes)
-        </dd>
-    </dl>
+<div class="card" style="width: 90%;padding:20px; margin:20px;">
+    <img class="card-img-top" src="@Model.Report.PhotoUrl" alt="Image for @Model.Report.Type" />
+    <div class="card-body">
+        <h3 class="card-title">Hazard Type: @Model.Report.Type</h3>
+        <p class="card-text">@Model.Description</p>
+        <p class="small">Hazard Found on: @Model.Report.HazardDate.ToShortDateString()</p>
+        <p class="small">Submitted By @Model.Report.User.UserName on @Model.Report.ReportDate.ToShortDateString()</p>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Investigate">
+        <form asp-controller="Investigator" asp-action="Investigate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -72,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfAction" class="control-label"></label>
-                <input asp-for="DateOfAction" class="form-control" />
+                <input id="datefield" type="date" asp-for="DateOfAction" value="@DateTime.Today" max="@DateTime.Today" class="form-control" />
                 <span asp-validation-for="DateOfAction" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -85,4 +42,5 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 

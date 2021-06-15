@@ -17,5 +17,6 @@ namespace Nemesys.ViewModels
         public string PhotoUrl { get; set; }
         public int Upvotes { get; set; }
         public UserViewModel User { get; set; }
+        public ViewInvestigationViewModel Investigation { get; set; }
     }
 }
