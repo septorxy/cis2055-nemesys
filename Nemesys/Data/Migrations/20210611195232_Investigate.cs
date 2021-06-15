@@ -86,7 +86,7 @@ namespace Nemesys.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InvestigateViewModel",
+                name: "NewInvestigationViewModel",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -107,7 +107,7 @@ namespace Nemesys.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestigateViewModel_ReportId",
-                table: "InvestigateViewModel",
+                table: "NewInvestigationViewModel",
                 column: "ReportId");
 
             migrationBuilder.CreateIndex(
@@ -132,7 +132,7 @@ namespace Nemesys.Data.Migrations
                 name: "EditUserRole");
 
             migrationBuilder.DropTable(
-                name: "InvestigateViewModel");
+                name: "NewInvestigationViewModel");
 
             migrationBuilder.DropTable(
                 name: "Investigations");

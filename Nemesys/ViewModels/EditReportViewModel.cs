@@ -14,15 +14,13 @@ namespace Nemesys.ViewModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
-        [StringLength(1000, ErrorMessage = "Type needs to be short")]
-        public string Type { get; set; }
-
-        [Required(ErrorMessage = "This field is required")]
         [StringLength(1000, ErrorMessage = "Too many characters entered for field: Location")]
         public string Location { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
         public DateTime HazardDate { get; set; }
+
+        public int TypeId { get; set; }
 
         public string PhotoUrl { get; set; }
         [Display(Name = "Image")]

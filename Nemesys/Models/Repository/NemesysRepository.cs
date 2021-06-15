@@ -30,9 +30,31 @@ namespace Nemesys.Models.Repository
             _appDbContext.SaveChanges();
         }
 
+        public void CreateStatus(Status status)
+        {
+            _appDbContext.Status.Add(status);
+            _appDbContext.SaveChanges();
+        }
+
+        public void CreateType(Type type)
+        {
+            _appDbContext.Type.Add(type);
+            _appDbContext.SaveChanges();
+        }
+
         public IEnumerable<Report> GetAllReports()
         {
             return _appDbContext.Reports.Include(b => b.User).OrderBy(b => b.ReportDate);
+        }
+
+        public IEnumerable<Status> GetAllStatuses()
+        {
+            return _appDbContext.Status;
+        }
+
+        public IEnumerable<Type> GetAllTypes()
+        {
+            return _appDbContext.Type;
         }
 
         public IEnumerable<AppUser> GetAllUsers()
@@ -40,9 +62,24 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Users;
         }
 
+        public Investigation GetInvestigationByReport(int reportId)
+        {
+            return _appDbContext.Investigations.Include(b => b.User).FirstOrDefault(p => p.ReportId == reportId);
+        }
+
         public Report GetReportById(int reportId)
         {
             return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(p => p.Id == reportId);
+        }
+
+        public Status GetStatusById(int Id)
+        {
+            return _appDbContext.Status.FirstOrDefault(a => a.Id == Id);
+        }
+
+        public Type GetTypeById(int Id)
+        {
+            return _appDbContext.Type.FirstOrDefault(a => a.Id == Id);
         }
 
         public AppUser GetUserById(string userId)
@@ -55,6 +92,27 @@ namespace Nemesys.Models.Repository
             return _appDbContext.Users.FirstOrDefault(a => a.UserName == user);
         }
 
+        public void UpdateInvestigation(Investigation updatedInvestigation)
+        {
+            try
+            {
+                var currInvestigation = _appDbContext.Investigations.SingleOrDefault(rp => rp.Id == updatedInvestigation.Id);
+                if (currInvestigation != null)
+                {
+                    currInvestigation.Description = updatedInvestigation.Description;
+                    currInvestigation.DateOfAction = updatedInvestigation.DateOfAction;
+                    currInvestigation.UserId = updatedInvestigation.UserId;
+
+                    _appDbContext.Entry(currInvestigation).State = EntityState.Modified;
+                    _appDbContext.SaveChanges();
+                }
+            }
+            catch (Exception)
+            { 
+                throw;
+            }
+        }
+
         public void UpdateReport(Report updatedReport)
         {
             try
@@ -62,7 +120,8 @@ namespace Nemesys.Models.Repository
                 var currReport = _appDbContext.Reports.SingleOrDefault(rp => rp.Id == updatedReport.Id);
                 if (currReport != null)
                 {
-                    currReport.Type = updatedReport.Type;
+                    currReport.TypeId = updatedReport.TypeId;
+                    currReport.StatusId = updatedReport.StatusId;
                     currReport.Description = updatedReport.Description;
                     currReport.HazardDate = updatedReport.HazardDate;
                     currReport.PhotoUrl = updatedReport.PhotoUrl;

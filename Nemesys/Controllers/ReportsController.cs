@@ -37,8 +37,50 @@ namespace Nemesys.Controllers
             try
             {
                 var post = _nemesysRepository.GetReportById(id);
+                var investigation = _nemesysRepository.GetInvestigationByReport(id);
+                Status currStatus = _nemesysRepository.GetStatusById(post.StatusId);
+                Models.Type currType = _nemesysRepository.GetTypeById(post.TypeId);
                 if (post == null)
                     return NotFound();
+                else if (investigation != null)
+                {
+                    var investigatorUser = _nemesysRepository.GetUserById(investigation.UserId);
+                    var model = new ReportViewModel()
+                    {
+                        Id = post.Id,
+                        ReportDate = post.ReportDate,
+                        HazardDate = post.HazardDate,
+                        Location = post.Location,
+                        Type = new ListViewModel() { 
+                            Id = currType.Id,
+                            Name = currType.Name
+                        },
+                        Description = post.Description,
+                        Status = new ListViewModel() {
+                            Id = currStatus.Id,
+                            Name = currStatus.Name
+                        },
+                        PhotoUrl = post.PhotoUrl,
+                        Upvotes = post.Upvotes,
+                        User = new UserViewModel()
+                        {
+                            Id = post.UserId,
+                            UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
+                        },
+                        Investigation = new ViewInvestigationViewModel
+                        {
+                            Id = investigation.Id,
+                            DateOfAction = investigation.DateOfAction,
+                            Description = investigation.Description,
+                            Investigator = new UserViewModel()
+                            {
+                                UserName = investigatorUser.UserName,
+                                Email = investigatorUser.Email
+                            }
+                        }
+                    };
+                    return View(model);
+                }
                 else
                 {
                     var model = new ReportViewModel()
@@ -47,15 +89,27 @@ namespace Nemesys.Controllers
                         ReportDate = post.ReportDate,
                         HazardDate = post.HazardDate,
                         Location = post.Location,
-                        Type = post.Type,
+                        Type = new ListViewModel()
+                        {
+                            Id = currType.Id,
+                            Name = currType.Name
+                        },
                         Description = post.Description,
-                        Status = post.Status,
+                        Status = new ListViewModel()
+                        {
+                            Id = currStatus.Id,
+                            Name = currStatus.Name
+                        },
                         PhotoUrl = post.PhotoUrl,
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
                         {
                             Id = post.UserId,
                             UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
+                        },
+                        Investigation = new ViewInvestigationViewModel
+                        {
+                            Id = -1
                         }
                     };
                     return View(model);
@@ -76,7 +130,7 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create([Bind("Description, Type, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
+        public IActionResult Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
         {
             if (ModelState.IsValid)
             {
@@ -96,11 +150,12 @@ namespace Nemesys.Controllers
 
                 Report report = new Report()
                 {
-                    Type = newReport.Type,
+                    TypeId = newReport.TypeId,
                     Description = newReport.Description,
                     Location = newReport.Location,
                     HazardDate = newReport.HazardDate,
                     ReportDate = DateTime.UtcNow,
+                    StatusId = 1,
                     PhotoUrl = " /images/reports/" + fileName,
                     Upvotes = 0,
                     UserId = _userManager.GetUserId(User)
@@ -131,7 +186,7 @@ namespace Nemesys.Controllers
                         EditReportViewModel model = new EditReportViewModel()
                         {
                             Id = report.Id,
-                            Type = report.Type,
+                            TypeId = report.TypeId,
                             Description = report.Description,
                             PhotoUrl = report.PhotoUrl,
                             HazardDate = report.HazardDate,
@@ -165,7 +220,7 @@ namespace Nemesys.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, Type, Description, ImageToUpload, HazardDate, Location")] EditReportViewModel editedReport)
+        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, TypeId, Description, ImageToUpload, HazardDate, Location")] EditReportViewModel editedReport)
         {
             try
             {
@@ -200,7 +255,7 @@ namespace Nemesys.Controllers
                         else
                            photoUrl = modelToUpdate.PhotoUrl;
 
-                        modelToUpdate.Type = editedReport.Type;
+                        modelToUpdate.TypeId = editedReport.TypeId;
                         modelToUpdate.Description = editedReport.Description;
                         modelToUpdate.PhotoUrl = photoUrl;
                         modelToUpdate.HazardDate = editedReport.HazardDate;
@@ -235,7 +290,6 @@ namespace Nemesys.Controllers
                 return View("Error");
             }
         }
-
     }
 }
 

@@ -11,11 +11,12 @@ namespace Nemesys.ViewModels
         public DateTime ReportDate { get; set; }
         public DateTime HazardDate { get; set; }
         public string Location { get; set; }
-        public string Type { get; set; }
         public string Description { get; set; }
-        public string Status { get; set; }
         public string PhotoUrl { get; set; }
         public int Upvotes { get; set; }
         public UserViewModel User { get; set; }
+        public ViewInvestigationViewModel Investigation { get; set; }
+        public ListViewModel Status { get; set; }
+        public ListViewModel Type { get; set; }
     }
 }

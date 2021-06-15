@@ -287,11 +287,11 @@ namespace Nemesys.Data.Migrations
                     b.Property<DateTime>("ReportDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Upvotes")
                         .HasColumnType("int");
@@ -301,9 +301,43 @@ namespace Nemesys.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("TypeId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("Nemesys.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Status");
+                });
+
+            modelBuilder.Entity("Nemesys.Models.Type", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Type");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -376,9 +410,25 @@ namespace Nemesys.Data.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Report", b =>
                 {
+                    b.HasOne("Nemesys.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nemesys.Models.Type", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Nemesys.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("Type");
 
                     b.Navigation("User");
                 });

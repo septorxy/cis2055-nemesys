@@ -4,22 +4,45 @@
 
 <h1>@Model.Type at  @Model.Location</h1>
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
-    <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type" />
+    <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type.Name" />
     <div class="card-body">
-        <h3 class="card-title">Hazard Type: @Model.Type</h3>
+        <h3 class="card-title">Hazard Type: @Model.Type.Name</h3>
         <p class="card-text">@Model.Description</p>
         <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
+        <p class="small">Status: @Model.Status.Name <p>
         <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>
     </div>
 </div>
 
 <div>
+    @if(Model.Investigation.Id != -1)
+     {
+    <div class="card-body">
+        <h3 class="card-title">Investigation Id: @Model.Investigation.Id</h3>
+        <p class="card-text">@Model.Investigation.Description</p>
+        <p class="small">Hazard Investigated on: @Model.Investigation.DateOfAction.ToShortDateString()</p>
+        <p class="small">Last Edited by: @Model.Investigation.Investigator.UserName.
+        For more info contact them here: <a href="mailto:@Model.Investigation.Investigator.Email?subject=Regarding Investigation ID: @Model.Investigation.Id">@Model.Investigation.Investigator.Email</a></p>
+    </div>
+     }
+</div>
+
+<div>
+    <a asp-controller="Reports" asp-action="Index" class="btn btn-primary">Back to list</a>
     @if (User.IsInRole("Admin") || User.IsInRole("Investigator"))
     {
-        <a asp-controller="Reports" asp-action="Index" class="btn btn-primary">Back to list</a>
-        <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id" class="btn btn-primary">Investigate</a>
-        @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
-        {<a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>}
+        if (Model.Investigation.Id == -1)
+        {
+            <a asp-controller="Investigator" asp-action="Investigate" asp-route-id="@Model.Id" class="btn btn-primary">New Investigation</a>
+        }
+        else
+        {
+            <a asp-controller="Investigator" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Investigation</a>
+        }
+    }
+    @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
+    {
+        <a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
     }
 </div>
 

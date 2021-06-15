@@ -31,13 +31,14 @@ namespace Nemesys.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult CreateRole()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectRole role)
+        public async Task<IActionResult> CreateRole(ProjectRole role)
         {
             var roleExist = await _roleManager.RoleExistsAsync(role.RoleName);
             if (!roleExist)
@@ -47,6 +48,7 @@ namespace Nemesys.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Assign()
         {
             return View();
@@ -64,9 +66,85 @@ namespace Nemesys.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, "User Not Found");
+                return View();
             }
-            
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult CreateStatus()
+        {
             return View();
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStatus(string name)
+        {
+            Boolean exists = false;
+            IEnumerable<Status> statuses = _nemesysRepository.GetAllStatuses();
+            foreach(Status status in statuses)
+            {
+                if (status.Name.Equals(name))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+            {
+                var newStatus = new Status()
+                {
+                    Name = name
+                };
+                _nemesysRepository.CreateStatus(newStatus);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Status Already Exists");
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CreateType()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateType(string name)
+        {
+            Boolean exists = false;
+            IEnumerable<Models.Type> types = _nemesysRepository.GetAllTypes();
+            foreach (Models.Type type in types)
+            {
+                if (type.Name.Equals(name))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+            {
+                var newType = new Models.Type()
+                {
+                    Name = name
+                };
+                _nemesysRepository.CreateType(newType);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Type Already Exists");
+                return View();
+            }
+        }
+
     }
+
+
 }

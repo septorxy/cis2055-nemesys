@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nemesys.ViewModels
 {
-    public class InvestigateViewModel
+    public class NewInvestigationViewModel
     {
         public int Id { get; set; }
         public ReportViewModel Report { get; set; }
