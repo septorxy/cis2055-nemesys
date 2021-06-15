@@ -19,6 +19,10 @@ namespace Nemesys.Data
         public DbSet<ProjectRole> ProjectRole { get; set; }
         public DbSet<Report> Reports { get; set; }
 
-        public DbSet<Investigation> Investigations { get;set;}
+        public DbSet<Investigation> Investigations { get; set; }
+
+        public DbSet<Status> Status { get; set; }
+
+        public DbSet<Models.Type> Type {get;set;}
     }
 }

@@ -21,5 +21,10 @@ namespace Nemesys.Models.Interfaces
         void UpdateTotalReports(AppUser User, int amount);
         Investigation GetInvestigationByReport(int reportId);
         void UpdateInvestigation(Investigation updatedInvestigation);
+        void CreateStatus(Status status);
+        void CreateType(Type type);
+        IEnumerable<Status> GetAllStatuses();
+        IEnumerable<Type> GetAllTypes();
+
     }
 }

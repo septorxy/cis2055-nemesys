@@ -139,6 +139,7 @@ namespace Nemesys.Controllers
                     Location = newReport.Location,
                     HazardDate = newReport.HazardDate,
                     ReportDate = DateTime.UtcNow,
+                    Status = "Open",
                     PhotoUrl = " /images/reports/" + fileName,
                     Upvotes = 0,
                     UserId = _userManager.GetUserId(User)

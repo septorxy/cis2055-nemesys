@@ -30,9 +30,31 @@ namespace Nemesys.Models.Repository
             _appDbContext.SaveChanges();
         }
 
+        public void CreateStatus(Status status)
+        {
+            _appDbContext.Status.Add(status);
+            _appDbContext.SaveChanges();
+        }
+
+        public void CreateType(Type type)
+        {
+            _appDbContext.Type.Add(type);
+            _appDbContext.SaveChanges();
+        }
+
         public IEnumerable<Report> GetAllReports()
         {
             return _appDbContext.Reports.Include(b => b.User).OrderBy(b => b.ReportDate);
+        }
+
+        public IEnumerable<Status> GetAllStatuses()
+        {
+            return _appDbContext.Status.Include(b => b.Name).OrderBy(b => b.Name);
+        }
+
+        public IEnumerable<Type> GetAllTypes()
+        {
+            return _appDbContext.Type.Include(b => b.Name).OrderBy(b => b.Name);
         }
 
         public IEnumerable<AppUser> GetAllUsers()

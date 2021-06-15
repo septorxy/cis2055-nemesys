@@ -19,6 +19,10 @@ namespace Nemesys.Models
         public int Upvotes { get; set; }
         public string UserId { get; set; }
         public AppUser User { get; set; }
+        public int StatusId {get;set;}
+        public Status status { get; set; }
+        public int TypeId { get; set; }
+        public Type type { get; set; }
 
     }
 }
