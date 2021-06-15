@@ -10,6 +10,7 @@
         <p class="card-text">@Model.Description</p>
         <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
         <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>
+        <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a>  @Model.Upvotes  <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
     </div>
 </div>
 
@@ -25,6 +26,8 @@
         <a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
         <a asp-controller="Reports" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary">Delete</a>
     }
+
+
 </div>
 
 
