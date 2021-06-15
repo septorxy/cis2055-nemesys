@@ -38,6 +38,8 @@ namespace Nemesys.Controllers
             {
                 var post = _nemesysRepository.GetReportById(id);
                 var investigation = _nemesysRepository.GetInvestigationByReport(id);
+                Status currStatus = _nemesysRepository.GetStatusById(post.StatusId);
+                Models.Type currType = _nemesysRepository.GetTypeById(post.TypeId);
                 if (post == null)
                     return NotFound();
                 else if (investigation != null)
@@ -49,9 +51,15 @@ namespace Nemesys.Controllers
                         ReportDate = post.ReportDate,
                         HazardDate = post.HazardDate,
                         Location = post.Location,
-                        Type = new ListViewModel(),
+                        Type = new ListViewModel() { 
+                            Id = currType.Id,
+                            Name = currType.Name
+                        },
                         Description = post.Description,
-                        Status = new ListViewModel(),
+                        Status = new ListViewModel() {
+                            Id = currStatus.Id,
+                            Name = currStatus.Name
+                        },
                         PhotoUrl = post.PhotoUrl,
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
@@ -81,9 +89,17 @@ namespace Nemesys.Controllers
                         ReportDate = post.ReportDate,
                         HazardDate = post.HazardDate,
                         Location = post.Location,
-                        Type = new ListViewModel(),
+                        Type = new ListViewModel()
+                        {
+                            Id = currType.Id,
+                            Name = currType.Name
+                        },
                         Description = post.Description,
-                        Status = new ListViewModel(),
+                        Status = new ListViewModel()
+                        {
+                            Id = currStatus.Id,
+                            Name = currStatus.Name
+                        },
                         PhotoUrl = post.PhotoUrl,
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
@@ -114,7 +130,7 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create([Bind("Description, Type, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
+        public IActionResult Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
         {
             if (ModelState.IsValid)
             {
@@ -204,7 +220,7 @@ namespace Nemesys.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, Type, Description, ImageToUpload, HazardDate, Location")] EditReportViewModel editedReport)
+        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, TypeId, Description, ImageToUpload, HazardDate, Location")] EditReportViewModel editedReport)
         {
             try
             {

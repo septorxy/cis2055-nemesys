@@ -9,6 +9,7 @@
         <h3 class="card-title">Hazard Type: @Model.Type.Name</h3>
         <p class="card-text">@Model.Description</p>
         <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
+        <p class="small">Status: @Model.Status.Name <p>
         <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>
     </div>
 </div>

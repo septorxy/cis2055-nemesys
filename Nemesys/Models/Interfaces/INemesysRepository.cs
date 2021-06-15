@@ -26,5 +26,7 @@ namespace Nemesys.Models.Interfaces
         IEnumerable<Status> GetAllStatuses();
         IEnumerable<Type> GetAllTypes();
 
+        Type GetTypeById(int Id);
+        Status GetStatusById(int Id);
     }
 }

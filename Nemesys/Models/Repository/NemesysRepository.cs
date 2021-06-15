@@ -49,12 +49,12 @@ namespace Nemesys.Models.Repository
 
         public IEnumerable<Status> GetAllStatuses()
         {
-            return _appDbContext.Status.Include(b => b.Name).OrderBy(b => b.Name);
+            return _appDbContext.Status;
         }
 
         public IEnumerable<Type> GetAllTypes()
         {
-            return _appDbContext.Type.Include(b => b.Name).OrderBy(b => b.Name);
+            return _appDbContext.Type;
         }
 
         public IEnumerable<AppUser> GetAllUsers()
@@ -70,6 +70,16 @@ namespace Nemesys.Models.Repository
         public Report GetReportById(int reportId)
         {
             return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(p => p.Id == reportId);
+        }
+
+        public Status GetStatusById(int Id)
+        {
+            return _appDbContext.Status.FirstOrDefault(a => a.Id == Id);
+        }
+
+        public Type GetTypeById(int Id)
+        {
+            return _appDbContext.Type.FirstOrDefault(a => a.Id == Id);
         }
 
         public AppUser GetUserById(string userId)
