@@ -4,9 +4,9 @@
 
 <h1>@Model.Type at  @Model.Location</h1>
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
-    <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type" />
+    <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type.Name" />
     <div class="card-body">
-        <h3 class="card-title">Hazard Type: @Model.Type</h3>
+        <h3 class="card-title">Hazard Type: @Model.Type.Name</h3>
         <p class="card-text">@Model.Description</p>
         <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
         <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>

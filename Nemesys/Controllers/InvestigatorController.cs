@@ -42,9 +42,9 @@ namespace Nemesys.Controllers
                     ReportDate = report.ReportDate,
                     HazardDate = report.HazardDate,
                     Location = report.Location,
-                    Type = report.Type,
+                    Type = new ListViewModel(),
                     Description = report.Description,
-                    Status = report.Status,
+                    Status = new ListViewModel(),
                     PhotoUrl = report.PhotoUrl,
                     Upvotes = report.Upvotes,
                     User = new UserViewModel()
@@ -130,9 +130,9 @@ namespace Nemesys.Controllers
                             ReportDate = report.ReportDate,
                             HazardDate = report.HazardDate,
                             Location = report.Location,
-                            Type = report.Type,
+                            Type = new ListViewModel(),
                             Description = report.Description,
-                            Status = report.Status,
+                            Status = new ListViewModel(),
                             PhotoUrl = report.PhotoUrl,
                             Upvotes = report.Upvotes,
                             User = new UserViewModel()

@@ -110,7 +110,8 @@ namespace Nemesys.Models.Repository
                 var currReport = _appDbContext.Reports.SingleOrDefault(rp => rp.Id == updatedReport.Id);
                 if (currReport != null)
                 {
-                    currReport.Type = updatedReport.Type;
+                    currReport.TypeId = updatedReport.TypeId;
+                    currReport.StatusId = updatedReport.StatusId;
                     currReport.Description = updatedReport.Description;
                     currReport.HazardDate = updatedReport.HazardDate;
                     currReport.PhotoUrl = updatedReport.PhotoUrl;

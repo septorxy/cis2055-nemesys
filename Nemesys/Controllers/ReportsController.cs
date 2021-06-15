@@ -49,9 +49,9 @@ namespace Nemesys.Controllers
                         ReportDate = post.ReportDate,
                         HazardDate = post.HazardDate,
                         Location = post.Location,
-                        Type = post.Type,
+                        Type = new ListViewModel(),
                         Description = post.Description,
-                        Status = post.Status,
+                        Status = new ListViewModel(),
                         PhotoUrl = post.PhotoUrl,
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
@@ -81,9 +81,9 @@ namespace Nemesys.Controllers
                         ReportDate = post.ReportDate,
                         HazardDate = post.HazardDate,
                         Location = post.Location,
-                        Type = post.Type,
+                        Type = new ListViewModel(),
                         Description = post.Description,
-                        Status = post.Status,
+                        Status = new ListViewModel(),
                         PhotoUrl = post.PhotoUrl,
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
@@ -134,12 +134,12 @@ namespace Nemesys.Controllers
 
                 Report report = new Report()
                 {
-                    Type = newReport.Type,
+                    TypeId = newReport.TypeId,
                     Description = newReport.Description,
                     Location = newReport.Location,
                     HazardDate = newReport.HazardDate,
                     ReportDate = DateTime.UtcNow,
-                    Status = "Open",
+                    StatusId = 1,
                     PhotoUrl = " /images/reports/" + fileName,
                     Upvotes = 0,
                     UserId = _userManager.GetUserId(User)
@@ -170,7 +170,7 @@ namespace Nemesys.Controllers
                         EditReportViewModel model = new EditReportViewModel()
                         {
                             Id = report.Id,
-                            Type = report.Type,
+                            TypeId = report.TypeId,
                             Description = report.Description,
                             PhotoUrl = report.PhotoUrl,
                             HazardDate = report.HazardDate,
@@ -239,7 +239,7 @@ namespace Nemesys.Controllers
                         else
                            photoUrl = modelToUpdate.PhotoUrl;
 
-                        modelToUpdate.Type = editedReport.Type;
+                        modelToUpdate.TypeId = editedReport.TypeId;
                         modelToUpdate.Description = editedReport.Description;
                         modelToUpdate.PhotoUrl = photoUrl;
                         modelToUpdate.HazardDate = editedReport.HazardDate;

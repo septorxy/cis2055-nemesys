@@ -10,9 +10,9 @@
 <h4>InvestigateViewModel</h4>
 <hr />
 <div class="card" style="width: 90%;padding:20px; margin:20px;">
-    <img class="card-img-top" src="@Model.Report.PhotoUrl" alt="Image for @Model.Report.Type" />
+    <img class="card-img-top" src="@Model.Report.PhotoUrl" alt="Image for @Model.Report.Type.Name" />
     <div class="card-body">
-        <h3 class="card-title">Hazard Type: @Model.Report.Type</h3>
+        <h3 class="card-title">Hazard Type: @Model.Report.Type.Name</h3>
         <p class="card-text">@Model.Description</p>
         <p class="small">Hazard Found on: @Model.Report.HazardDate.ToShortDateString()</p>
         <p class="small">Submitted By @Model.Report.User.UserName on @Model.Report.ReportDate.ToShortDateString()</p>
