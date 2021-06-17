@@ -17,6 +17,7 @@ namespace Nemesys.ViewModels
         [StringLength(1000, ErrorMessage = "Too many characters entered for field: Location")]
         public string Location { get; set; }
 
+        [Display(Name = "Hazard Date")]
         [Required(ErrorMessage = "This field is required")]
         public DateTime HazardDate { get; set; }
 
@@ -24,6 +25,7 @@ namespace Nemesys.ViewModels
         [Display(Name = "Image")]
         public IFormFile ImageToUpload { get; set; } //used only when submitting form
 
+        [Display(Name = "Hazard Type")]
         [Required(ErrorMessage = "This field is required")]
         public int TypeId { get; set; }
         public List<ListViewModel> TypeList { get; set; }
