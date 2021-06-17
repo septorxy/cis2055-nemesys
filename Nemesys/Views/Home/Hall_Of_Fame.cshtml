@@ -4,18 +4,21 @@
     ViewData["Title"] = "Hall Of Fame";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="header-title">@ViewData["Title"]</h1>
 
-<h2>The Top @Model.TotalEntries Reporters!</h2>
+<h2 class="primary-subheader"></h2>
 
 <div class="row">
+    @{int counter = 1; }
     @foreach (var user in Model.Users)
     {
-        <div class="card" style="width: 18rem;padding:20px; margin:20px;">
+        <div class="card">
             <div class="card-body">
+                <h3 class="card-title">#@counter</h3>
                 <h3 class="card-title">@user.UserName</h3>
                 <p class="small">Made @user.TotalReports reports</p>
             </div>
         </div>
+        counter++;
     }
 </div>
