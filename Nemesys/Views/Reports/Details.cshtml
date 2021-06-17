@@ -11,7 +11,18 @@
         <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
         <p class="small">Status: @Model.Status.Name <p>
         <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>
-        <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a>  @Model.Upvotes  <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
+        @if (Model.vote == 0)
+        {
+            <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
+        }
+        else if (Model.vote == -1)
+        {
+            <br /><a disabled class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
+        }
+        else
+        {
+            <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a disabled class="btn btn-primary">+</a>
+        }
     </div>
 </div>
 

@@ -24,5 +24,7 @@ namespace Nemesys.Data
         public DbSet<Status> Status { get; set; }
 
         public DbSet<Models.Type> Type {get;set;}
+
+        public DbSet<Vote> Vote { get; set; }
     }
 }

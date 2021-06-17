@@ -36,10 +36,16 @@ namespace Nemesys.Controllers
         {
             try
             {
+                int currVote = 0;
                 var post = _nemesysRepository.GetReportById(id);
                 var investigation = _nemesysRepository.GetInvestigationByReport(id);
                 Status currStatus = _nemesysRepository.GetStatusById(post.StatusId);
                 Models.Type currType = _nemesysRepository.GetTypeById(post.TypeId);
+                var getVote = _nemesysRepository.getVoted(post.Id, _userManager.GetUserId(User));
+                if(getVote != null)
+                {
+                    currVote = getVote.vote;
+                }
                 if (post == null)
                     return NotFound();
                 else if (investigation != null)
@@ -51,7 +57,7 @@ namespace Nemesys.Controllers
                         ReportDate = post.ReportDate,
                         HazardDate = post.HazardDate,
                         Location = post.Location,
-                        Type = new ListViewModel() { 
+                        Type = new ListViewModel() {
                             Id = currType.Id,
                             Name = currType.Name
                         },
@@ -62,6 +68,7 @@ namespace Nemesys.Controllers
                         },
                         PhotoUrl = post.PhotoUrl,
                         Upvotes = post.Upvotes,
+                        vote = currVote,
                         User = new UserViewModel()
                         {
                             Id = post.UserId,
@@ -101,6 +108,7 @@ namespace Nemesys.Controllers
                             Name = currStatus.Name
                         },
                         PhotoUrl = post.PhotoUrl,
+                        vote = currVote,
                         Upvotes = post.Upvotes,
                         User = new UserViewModel()
                         {
@@ -345,8 +353,22 @@ namespace Nemesys.Controllers
 
                 //Check if the current user has access to this resource
                 var currentUser = await _userManager.GetUserAsync(User);
-            
-                modelToUpvote.Upvotes++;
+                if(_nemesysRepository.getVoted(id, currentUser.Id) == null) 
+                {
+                    modelToUpvote.Upvotes++;
+                }
+                else
+                {
+                    modelToUpvote.Upvotes += 2;
+                }
+
+                Vote vote = new Vote()
+                {
+                   ReportId = id,
+                   UserId = currentUser.Id,
+                   vote = 1
+                };
+                _nemesysRepository.setVoted(vote);
                 _nemesysRepository.UpdateReport(modelToUpvote);
                 return RedirectToAction("Details", new { Id = id });
 
@@ -374,7 +396,22 @@ namespace Nemesys.Controllers
                 //Check if the current user has access to this resource
                 var currentUser = await _userManager.GetUserAsync(User);
 
-                modelToDownvote.Upvotes--;
+                if (_nemesysRepository.getVoted(id, currentUser.Id) == null)
+                {
+                    modelToDownvote.Upvotes--;
+                }
+                else
+                {
+                    modelToDownvote.Upvotes -= 2;
+                }
+
+                Vote vote = new Vote()
+                {
+                    ReportId = id,
+                    UserId = currentUser.Id,
+                    vote = -1
+                };
+                _nemesysRepository.setVoted(vote);
                 _nemesysRepository.UpdateReport(modelToDownvote);
                 return RedirectToAction("Details", new { Id = id });
 

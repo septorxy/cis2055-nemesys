@@ -25,10 +25,11 @@ namespace Nemesys.Models.Interfaces
         void CreateType(Type type);
         IEnumerable<Status> GetAllStatuses();
         IEnumerable<Type> GetAllTypes();
-
         Type GetTypeById(int Id);
         Status GetStatusById(int Id);
         void DeleteReport(Report deletedReport);
+        Vote getVoted(int reportId, string userId);
+        void setVoted(Vote vote);
 
     }
 }
