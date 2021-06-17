@@ -208,6 +208,8 @@ namespace Nemesys.Controllers
                     Name = t.Name
                 }).ToList();
                 newReport.TypeList = typeList;
+                newReport.Longitude = 0;
+                newReport.Latitude = 0;
                 return View(newReport);
             }
         }
@@ -309,18 +311,23 @@ namespace Nemesys.Controllers
                         return RedirectToAction("Index");
                     }
                     else
-                        return Unauthorized(); //or redirect to error controller with 401/403 actions
+                    {
+                        var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
+                        {
+                            Id = t.Id,
+                            Name = t.Name
+                        }).ToList();
+                        editedReport.TypeList = typeList;
+                        editedReport.Longitude = 0;
+                        editedReport.Latitude = 0;
+
+                        return View(editedReport);
+                    }
+                        
                 }
                 else
                 {
-                    var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
-                    {
-                        Id = t.Id,
-                        Name = t.Name
-                    }).ToList();
-                    editedReport.TypeList = typeList;
-
-                    return View(editedReport);
+                    return View("Error");
                 }
             }
             catch (Exception ex)
@@ -346,7 +353,7 @@ namespace Nemesys.Controllers
                 var currentUser = await _userManager.GetUserAsync(User);
                 if (modelToDelete.User.Id == currentUser.Id || _userManager.GetRolesAsync(currentUser).Equals("Admin"))
                 {
-                    if (modelToDelete.PhotoUrl.Length > 1)
+                    if (!modelToDelete.PhotoUrl.Equals(" /images/reports/"))
                     {
                         String path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + Path.GetFileName(modelToDelete.PhotoUrl);
                         System.IO.File.Delete(path);
