@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Nemesys.Data.Migrations;
+using Nemesys.Models;
 
 namespace Nemesys.Areas.Identity.Pages.Account
 {
