@@ -336,10 +336,13 @@ namespace Nemesys.Controllers
 
                 //Check if the current user has access to this resource
                 var currentUser = await _userManager.GetUserAsync(User);
-                if (modelToDelete.User.Id == currentUser.Id)
+                if (modelToDelete.User.Id == currentUser.Id || _userManager.GetRolesAsync(currentUser).Equals("Admin"))
                 {
-
-                    System.IO.File.Delete(modelToDelete.PhotoUrl);
+                    if (modelToDelete.PhotoUrl.Length > 1)
+                    {
+                        String path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + Path.GetFileName(modelToDelete.PhotoUrl);
+                        System.IO.File.Delete(path);
+                    }
                     _nemesysRepository.UpdateTotalReports(modelToDelete.User, -1);
                     modelToDelete.User = null;
                     modelToDelete.UserId = null;
@@ -352,7 +355,7 @@ namespace Nemesys.Controllers
                 else
                 {
 
-                    return View(deletedReport);
+                    return RedirectToAction("Details", new { Id = id });
                 }
             }
             catch (Exception ex)

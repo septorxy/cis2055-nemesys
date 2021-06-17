@@ -52,7 +52,7 @@
             <a asp-controller="Investigator" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Investigation</a>
         }
     }
-    @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
+    @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id || User.IsInRole("Admin"))
     {
         <a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
         <a asp-controller="Reports" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary">Delete</a>
