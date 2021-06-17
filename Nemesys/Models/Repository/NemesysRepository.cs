@@ -159,5 +159,25 @@ namespace Nemesys.Models.Repository
             _appDbContext.Remove(deletedReport);
             _appDbContext.SaveChanges();
         }
+
+        public Vote getVoted(int reportId, string userId)
+        {
+            return _appDbContext.Vote.SingleOrDefault(v => v.UserId == userId && v.ReportId==reportId);
+        }
+
+        public void setVoted(Vote vote)
+        {
+            var result = _appDbContext.Vote.SingleOrDefault(v => v.UserId == vote.UserId && v.ReportId == vote.ReportId);
+            if(result != null)
+            {
+                result.vote = vote.vote;
+                _appDbContext.Entry(result).State = EntityState.Modified;
+            }
+            else
+            {
+                _appDbContext.Vote.Add(vote);
+            }
+            _appDbContext.SaveChanges();
+        }
     }
 }
