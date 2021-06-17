@@ -177,7 +177,7 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate, Longitude, Latitude")] EditReportViewModel newReport)
+        public async Task<IActionResult> Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate, Longitude, Latitude")] EditReportViewModel newReport)
         {
             try
             {
@@ -213,16 +213,13 @@ namespace Nemesys.Controllers
                     _nemesysRepository.CreateReport(report);
                     var user = _nemesysRepository.GetUserByUsername(User.Identity.Name);
                     _nemesysRepository.UpdateTotalReports(user, 1);
-                    //var AllUsers = _nemesysRepository.GetAllUsers();
-                    //foreach(var aUser in AllUsers)
-                    //{
-                    //    var role = await _userManager.GetRolesAsync(aUser);
-                    //    if (role.Equals("Investigator") || role.Equals("Admin"))
-                    //    {
-                    //        if(user != aUser)
-                    //            await _emailSender.SendEmailAsync(aUser.Email, "Attention! A Report has been created", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the new report.<br>Sincerely,<br>The Admin Team");
-                    //    }
-                    //}
+                    var Investigators = await _userManager.GetUsersInRoleAsync("Investigator");
+                    foreach (var investigator in Investigators)
+                    {
+                        if (user != investigator)
+                            await _emailSender.SendEmailAsync(investigator.Email, "Attention! A Report has been created", $"Dear {investigator.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the new report.<br>Sincerely,<br>The Admin Team");
+                    }
+
                     return RedirectToAction("Index");
                 }
                 else
@@ -314,8 +311,6 @@ namespace Nemesys.Controllers
                         if (editedReport.ImageToUpload != null)
                         {
                             string fileName = "";
-                            //At this point you should check size, extension etc...
-                            //Then persist using a new name for consistency (e.g. new Guid)
                             var extension = "." + editedReport.ImageToUpload.FileName.Split('.')[editedReport.ImageToUpload.FileName.Split('.').Length - 1];
                             fileName = Guid.NewGuid().ToString() + extension;
                             var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + fileName;

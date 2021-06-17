@@ -10,7 +10,6 @@ namespace Nemesys.Models.Interfaces
     {
         IEnumerable<Report> GetAllReports();
         Report GetReportById(int ReportId);
-
         IEnumerable<AppUser> GetAllUsers();
         AppUser GetUserById(string userId);
         AppUser GetUserByUsername(string user);

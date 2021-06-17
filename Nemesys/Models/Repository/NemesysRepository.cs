@@ -14,13 +14,15 @@ namespace Nemesys.Models.Repository
     {
         private readonly ApplicationDbContext _appDbContext;
         private readonly ILogger<NemesysRepository> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
-        public NemesysRepository(ApplicationDbContext appDbContext, ILogger<NemesysRepository> logger)
+        public NemesysRepository(ApplicationDbContext appDbContext, ILogger<NemesysRepository> logger, UserManager<AppUser> userManager)
         {
             try
             {
                 _appDbContext = appDbContext;
                 _logger = logger;
+                _userManager = userManager;
             }
             catch (Exception ex)
             {

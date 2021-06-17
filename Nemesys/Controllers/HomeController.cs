@@ -23,7 +23,7 @@ namespace Nemesys.Controllers
             _nemesysRepository = nemesysRepository;
             _logger = logger;
         }
-        
+
         public IActionResult Index()
         {
             return View();
