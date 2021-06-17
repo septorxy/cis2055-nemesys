@@ -12,6 +12,8 @@ namespace Nemesys.Models
         public DateTime ReportDate { get; set; }
         public DateTime HazardDate { get; set; }
         public string Location { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public string Description { get; set; }
         public string PhotoUrl { get; set; }
         public int Upvotes { get; set; }

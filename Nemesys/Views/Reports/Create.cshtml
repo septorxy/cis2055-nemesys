@@ -25,6 +25,11 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
     </div>
+    <div style="width: 100%" id="map"></div>
+    <input asp-for="Longitude" type="hidden" class="form-control" />
+    <input asp-for="Latitude" type="hidden" class="form-control" />
+    <script src="~/js/UserMap.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwq7lLOpd5E_Mq4tefa6cWjPMobjUT3Rg&callback=initMap&libraries=&v=weekly" async></script>
     <div class="form-group">
         <label asp-for="Location" class="col-md-2"></label>
         <div class="col-md-5">
