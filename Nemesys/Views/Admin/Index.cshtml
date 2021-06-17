@@ -4,16 +4,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Admin Controls</h1>
-<table width="100%">
-    <tr>
-        <td><a asp-action="CreateRole">Create Role</a></td>
-        <td><a asp-action="Assign">Assign Role</a></td>
-    </tr>
-    <tr>
-        <td><a asp-action="CreateStatus">Create Status</a></td>
-        <td><a asp-action="CreateType">Create Type</a></td>
-    </tr>
+<h1 class="create-title header-title">Admin Controls</h1>
 
-</table>
+<div class="card">
+    <div class="card-body">
+        <a asp-action="CreateRole">Create Role</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <a asp-action="Assign">Assign Role</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <a asp-action="CreateStatus">Create Status</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <a asp-action="CreateType">Create Type</a>
+    </div>
+</div>
+
 

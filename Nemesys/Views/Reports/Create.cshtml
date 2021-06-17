@@ -4,9 +4,9 @@
 
 @model Nemesys.ViewModels.EditReportViewModel
 
-<h2>Create Report</h2>
+<h2 class="header-title create-title">Create Report</h2>
 
-<form asp-action="Create" method="post" role="form" enctype="multipart/form-data">
+<form asp-action="Create" method="post" role="form" enctype="multipart/form-data" class="form">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="TypeId" class="col-md-2"></label>
@@ -35,7 +35,7 @@
     <div class="form-group">
         <label asp-for="HazardDate" class="col-md-2"></label>
         <div class="col-md-5">
-            <input id="datefield" type="date" asp-for="HazardDate" class="form-control" />
+            <input id="datefield" value="@DateTime.Today" type="date" asp-for="HazardDate" class="form-control" />
         </div>
     </div>
     <div class="form-group">
