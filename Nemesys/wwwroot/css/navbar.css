@@ -5,6 +5,8 @@
 	
 .navbar .nav-item:hover .dropdown-menu{ 
 	display: block;
+	transition: all 3s ease-in;
+	transform: translateY(1);
 }
 
 #nav-logo{
@@ -16,12 +18,14 @@
 	height: 50px;
 }
 
-.navbar-btn{
-	padding-top: 7px;
-}
 
 #user-btn{
 	padding-top: 9px;
+}
+
+
+.dropdown{
+	padding-top: 1px;
 }
 
 
