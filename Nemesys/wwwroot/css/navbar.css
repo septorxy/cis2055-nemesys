@@ -1,0 +1,28 @@
+
+.navbar .nav-item .dropdown-menu{ 
+	display: none; 
+}
+	
+.navbar .nav-item:hover .dropdown-menu{ 
+	display: block;
+}
+
+#nav-logo{
+	width: 3rem;
+	height: 3rem;
+}
+
+.navbar{
+	height: 50px;
+}
+
+.navbar-btn{
+	padding-top: 7px;
+}
+
+#user-btn{
+	padding-top: 9px;
+}
+
+
+

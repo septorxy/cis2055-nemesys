@@ -1,13 +1,9 @@
-
-.navbar .nav-item .dropdown-menu{ 
-	display: none; 
+#main-logo{
+	width: 40rem;
+	height: 40rem;
 }
-	
-.navbar .nav-item:hover .dropdown-menu{ 
-	display: block;
-
-}
-
-.navbar .nav-item .dropdown-menu{ 
-	margin-top:0; 
+.home-about{
+	font-size: 16pt;
+	text-align: justify;
+	font-family: "Courier New", Courier, monospace;
 }
