@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
@@ -18,119 +19,138 @@ namespace Nemesys.Controllers
         private readonly INemesysRepository _nemesysRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger<InvestigatorController> _logger;
 
-        public InvestigatorController(INemesysRepository nemesysRepository, UserManager<AppUser> userManager, IEmailSender emailSender)
+        public InvestigatorController(INemesysRepository nemesysRepository, UserManager<AppUser> userManager, IEmailSender emailSender, ILogger<InvestigatorController> logger)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult Investigate(int Id)
         {
-            Report report = _nemesysRepository.GetReportById(Id);
-            var statusList = _nemesysRepository.GetAllStatuses().Select(s => new ListViewModel()
+            try
             {
-                Id = s.Id,
-                Name = s.Name
-            }).ToList();
-            Status currStatus = _nemesysRepository.GetStatusById(report.StatusId);
-            Models.Type currType = _nemesysRepository.GetTypeById(report.TypeId);
-            var model = new NewInvestigationViewModel()
-            {
-                StatusList = statusList,
-                StatusId = report.StatusId,
-                Report = new ReportViewModel()
-                {
-                    Id = report.Id,
-                    ReportDate = report.ReportDate,
-                    HazardDate = report.HazardDate,
-                    Location = report.Location,
-                    Longitude = report.Longitude,
-                    Latitiude = report.Latitude,
-                    Type = new ListViewModel()
-                    {
-                        Name = currStatus.Name
-                    },
-                    Description = report.Description,
-                    Status = new ListViewModel() 
-                    { 
-                        Name = currType.Name
-                    },
-                    PhotoUrl = report.PhotoUrl,
-                    Upvotes = report.Upvotes,
-                    User = new UserViewModel()
-                    {
-                        Id = report.UserId,
-                        UserName = report.User.UserName
-                    }
-                }
-            };
-
-            return View(model); ;
-        }
-
-        [HttpPost]
-        public IActionResult Investigate([Bind("Description, DateOfAction, StatusId")] NewInvestigationViewModel newInvestigation, int Id)
-        {
-            Report report = _nemesysRepository.GetReportById(Id);
-            if (ModelState.IsValid){ 
-                Investigation investigate = new Investigation()
-                {
-                    Id = Id,
-                    DateOfAction = newInvestigation.DateOfAction,
-                    Description = newInvestigation.Description,
-                    ReportId = report.Id,
-                    UserId = _userManager.GetUserId(User)
-                };
-                _nemesysRepository.CreateInvestigation(investigate);
-                _emailSender.SendEmailAsync(report.User.Email, "Your Report is being Investigated!", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" +report.Id+ "'>this link</a> to view the initial investigation response!. <br>Sincerely,<br>The Investigation Team");
-                if(report.StatusId != newInvestigation.StatusId)
-                {
-                    report.StatusId = newInvestigation.StatusId;
-                    _nemesysRepository.UpdateReport(report);
-                    _emailSender.SendEmailAsync(report.User.Email, "Your Report's Status has changed!", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the current status of your report.<br>Sincerely,<br>The Investigation Team");
-                }
-                return RedirectToAction("Details", "Reports", new { id = report.Id});
-            }
-            else
-            {
-                Status currStatus = _nemesysRepository.GetStatusById(report.StatusId);
-                Models.Type currType = _nemesysRepository.GetTypeById(report.TypeId);
+                Report report = _nemesysRepository.GetReportById(Id);
                 var statusList = _nemesysRepository.GetAllStatuses().Select(s => new ListViewModel()
                 {
                     Id = s.Id,
                     Name = s.Name
                 }).ToList();
-                newInvestigation.Report = new ReportViewModel()
+                Status currStatus = _nemesysRepository.GetStatusById(report.StatusId);
+                Models.Type currType = _nemesysRepository.GetTypeById(report.TypeId);
+                var model = new NewInvestigationViewModel()
                 {
-                    Id = report.Id,
-                    ReportDate = report.ReportDate,
-                    HazardDate = report.HazardDate,
-                    Location = report.Location,
-                    Type = new ListViewModel()
+                    StatusList = statusList,
+                    StatusId = report.StatusId,
+                    Report = new ReportViewModel()
                     {
-                        Name = currType.Name
-                    },
-                    Description = report.Description,
-                    Status = new ListViewModel()
-                    {
-                        Name = currStatus.Name
-                    },
-                    PhotoUrl = report.PhotoUrl,
-                    Upvotes = report.Upvotes,
-                    Longitude = report.Longitude,
-                    Latitiude = report.Latitude,
-                    User = new UserViewModel()
-                    {
-                        Id = report.UserId,
-                        UserName = report.User.UserName
-                    },
+                        Id = report.Id,
+                        ReportDate = report.ReportDate,
+                        HazardDate = report.HazardDate,
+                        Location = report.Location,
+                        Longitude = report.Longitude,
+                        Latitiude = report.Latitude,
+                        Type = new ListViewModel()
+                        {
+                            Name = currStatus.Name
+                        },
+                        Description = report.Description,
+                        Status = new ListViewModel()
+                        {
+                            Name = currType.Name
+                        },
+                        PhotoUrl = report.PhotoUrl,
+                        Upvotes = report.Upvotes,
+                        User = new UserViewModel()
+                        {
+                            Id = report.UserId,
+                            UserName = report.User.UserName
+                        }
+                    }
                 };
-                newInvestigation.StatusList = statusList;
-                newInvestigation.StatusId = report.StatusId;
-                return View(newInvestigation);
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Investigate([Bind("Description, DateOfAction, StatusId")] NewInvestigationViewModel newInvestigation, int Id)
+        {
+            try
+            {
+                Report report = _nemesysRepository.GetReportById(Id);
+                if (ModelState.IsValid)
+                {
+                    Investigation investigate = new Investigation()
+                    {
+                        Id = Id,
+                        DateOfAction = newInvestigation.DateOfAction,
+                        Description = newInvestigation.Description,
+                        ReportId = report.Id,
+                        UserId = _userManager.GetUserId(User)
+                    };
+                    _nemesysRepository.CreateInvestigation(investigate);
+                    _emailSender.SendEmailAsync(report.User.Email, "Your Report is being Investigated!", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the initial investigation response!. <br>Sincerely,<br>The Investigation Team");
+                    if (report.StatusId != newInvestigation.StatusId)
+                    {
+                        report.StatusId = newInvestigation.StatusId;
+                        _nemesysRepository.UpdateReport(report);
+                        _emailSender.SendEmailAsync(report.User.Email, "Your Report's Status has changed!", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the current status of your report.<br>Sincerely,<br>The Investigation Team");
+                    }
+                    return RedirectToAction("Details", "Reports", new { id = report.Id });
+                }
+                else
+                {
+                    Status currStatus = _nemesysRepository.GetStatusById(report.StatusId);
+                    Models.Type currType = _nemesysRepository.GetTypeById(report.TypeId);
+                    var statusList = _nemesysRepository.GetAllStatuses().Select(s => new ListViewModel()
+                    {
+                        Id = s.Id,
+                        Name = s.Name
+                    }).ToList();
+                    newInvestigation.Report = new ReportViewModel()
+                    {
+                        Id = report.Id,
+                        ReportDate = report.ReportDate,
+                        HazardDate = report.HazardDate,
+                        Location = report.Location,
+                        Type = new ListViewModel()
+                        {
+                            Name = currType.Name
+                        },
+                        Description = report.Description,
+                        Status = new ListViewModel()
+                        {
+                            Name = currStatus.Name
+                        },
+                        PhotoUrl = report.PhotoUrl,
+                        Upvotes = report.Upvotes,
+                        Longitude = report.Longitude,
+                        Latitiude = report.Latitude,
+                        User = new UserViewModel()
+                        {
+                            Id = report.UserId,
+                            UserName = report.User.UserName
+                        },
+                    };
+                    newInvestigation.StatusList = statusList;
+                    newInvestigation.StatusId = report.StatusId;
+                    return View(newInvestigation);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
             }
         }
 
@@ -143,26 +163,34 @@ namespace Nemesys.Controllers
         [HttpPost]
         public async Task<IActionResult> Assign(string role, string username)
         {
-            AppUser User = _nemesysRepository.GetUserByUsername(username);
-            if (User != null)
+            try
             {
-                var currRole = await _userManager.GetRolesAsync(User);
-                if (currRole.Equals("User") || currRole.Equals("Investigator"))
+                AppUser User = _nemesysRepository.GetUserByUsername(username);
+                if (User != null)
                 {
-                    await _userManager.RemoveFromRoleAsync(User, currRole[0]);
-                    await _userManager.AddToRoleAsync(User, role);
+                    var currRole = await _userManager.GetRolesAsync(User);
+                    if (currRole.Equals("User") || currRole.Equals("Investigator"))
+                    {
+                        await _userManager.RemoveFromRoleAsync(User, currRole[0]);
+                        await _userManager.AddToRoleAsync(User, role);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "You can't edit the role of Admins from this page");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "You can't edit the role of Admins from this page");
+                    ModelState.AddModelError(string.Empty, "User Not Found");
                 }
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "User Not Found");
-            }
 
-            return View();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                return View("Error");
+            }
         }
 
         [HttpGet]
@@ -220,11 +248,11 @@ namespace Nemesys.Controllers
 
                 }
                 else
-                    return RedirectToAction("Details", "Reports", new { Id=id });
+                    return RedirectToAction("Details", "Reports", new { Id = id });
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex, ex.Message, ex.Data);
                 return View("Error");
             }
         }
@@ -243,7 +271,7 @@ namespace Nemesys.Controllers
                 if (ModelState.IsValid)
                 {
                     modelToUpdate.Description = editedInvestigation.Description;
-                    modelToUpdate.DateOfAction= editedInvestigation.DateOfAction;
+                    modelToUpdate.DateOfAction = editedInvestigation.DateOfAction;
                     modelToUpdate.UserId = _userManager.GetUserId(User);
 
                     _nemesysRepository.UpdateInvestigation(modelToUpdate);
@@ -295,7 +323,8 @@ namespace Nemesys.Controllers
                 }
             }
             catch (Exception ex)
-            { 
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
                 return View("Error");
             }
         }

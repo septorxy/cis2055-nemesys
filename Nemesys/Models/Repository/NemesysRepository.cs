@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Nemesys.Data;
 using Nemesys.Models.Interfaces;
 using System;
@@ -12,84 +13,208 @@ namespace Nemesys.Models.Repository
     public class NemesysRepository : INemesysRepository
     {
         private readonly ApplicationDbContext _appDbContext;
+        private readonly ILogger<NemesysRepository> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
-        public NemesysRepository(ApplicationDbContext appDbContext)
+        public NemesysRepository(ApplicationDbContext appDbContext, ILogger<NemesysRepository> logger, UserManager<AppUser> userManager)
         {
-            _appDbContext = appDbContext;
+            try
+            {
+                _appDbContext = appDbContext;
+                _logger = logger;
+                _userManager = userManager;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void CreateInvestigation(Investigation newInvestigation)
         {
-            _appDbContext.Investigations.Add(newInvestigation);
-            _appDbContext.SaveChanges();
+            try
+            {
+                _appDbContext.Investigations.Add(newInvestigation);
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void CreateReport(Report newReport)
         {
-            _appDbContext.Reports.Add(newReport);
-            _appDbContext.SaveChanges();
+            try
+            {
+                _appDbContext.Reports.Add(newReport);
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void CreateStatus(Status status)
         {
-            _appDbContext.Status.Add(status);
-            _appDbContext.SaveChanges();
+            try
+            {
+                _appDbContext.Status.Add(status);
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void CreateType(Type type)
         {
-            _appDbContext.Type.Add(type);
-            _appDbContext.SaveChanges();
+            try
+            {
+                _appDbContext.Type.Add(type);
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public IEnumerable<Report> GetAllReports()
         {
-            return _appDbContext.Reports.Include(b => b.User).OrderBy(b => b.ReportDate);
+            try
+            {
+                return _appDbContext.Reports.Include(b => b.User).OrderBy(b => b.ReportDate);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public IEnumerable<Status> GetAllStatuses()
         {
-            return _appDbContext.Status;
+            try
+            {
+                return _appDbContext.Status;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public IEnumerable<Type> GetAllTypes()
         {
-            return _appDbContext.Type;
+            try
+            {
+                return _appDbContext.Type;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public IEnumerable<AppUser> GetAllUsers()
         {
-            return _appDbContext.Users;
+            try
+            {
+                return _appDbContext.Users;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public Investigation GetInvestigationByReport(int reportId)
         {
-            return _appDbContext.Investigations.Include(b => b.User).FirstOrDefault(p => p.ReportId == reportId);
+            try
+            {
+                return _appDbContext.Investigations.Include(b => b.User).FirstOrDefault(p => p.ReportId == reportId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public Report GetReportById(int reportId)
         {
-            return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(p => p.Id == reportId);
+            try
+            {
+                return _appDbContext.Reports.Include(b => b.User).FirstOrDefault(p => p.Id == reportId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public Status GetStatusById(int Id)
         {
-            return _appDbContext.Status.FirstOrDefault(a => a.Id == Id);
+            try
+            {
+                return _appDbContext.Status.FirstOrDefault(a => a.Id == Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public Type GetTypeById(int Id)
         {
-            return _appDbContext.Type.FirstOrDefault(a => a.Id == Id);
+            try
+            {
+                return _appDbContext.Type.FirstOrDefault(a => a.Id == Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public AppUser GetUserById(string userId)
         {
-            return _appDbContext.Users.FirstOrDefault(a => a.Id == userId);
+            try
+            {
+                return _appDbContext.Users.FirstOrDefault(a => a.Id == userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public AppUser GetUserByUsername(string user)
         {
-            return _appDbContext.Users.FirstOrDefault(a => a.UserName == user);
+            try
+            {
+                return _appDbContext.Users.FirstOrDefault(a => a.UserName == user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void UpdateInvestigation(Investigation updatedInvestigation)
@@ -107,8 +232,9 @@ namespace Nemesys.Models.Repository
                     _appDbContext.SaveChanges();
                 }
             }
-            catch (Exception)
-            { 
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
                 throw;
             }
         }
@@ -132,52 +258,92 @@ namespace Nemesys.Models.Repository
                     _appDbContext.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-            
+                _logger.LogError(ex, ex.Message, ex.Data);
                 throw;
             }
         }
 
         public void UpdateTotalReports(AppUser User, int amount)
         {
-            var result = _appDbContext.Users.SingleOrDefault(b => b.Id == User.Id);
-            if (result != null)
+            try
             {
-                result.TotalReports = result.TotalReports + amount;
-                _appDbContext.SaveChanges();
+                var result = _appDbContext.Users.SingleOrDefault(b => b.Id == User.Id);
+                if (result != null)
+                {
+                    result.TotalReports = result.TotalReports + amount;
+                    _appDbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
             }
         }
 
         IEnumerable<AppUser> INemesysRepository.GetTopThree()
         {
-            return _appDbContext.Users.OrderByDescending(u => u.TotalReports).Take(3);
+            try
+            {
+                return _appDbContext.Users.OrderByDescending(u => u.TotalReports).Take(3);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void DeleteReport(Report deletedReport)
         {
-            _appDbContext.Remove(deletedReport);
-            _appDbContext.SaveChanges();
+            try
+            {
+                _appDbContext.Remove(deletedReport);
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public Vote getVoted(int reportId, string userId)
         {
-            return _appDbContext.Vote.SingleOrDefault(v => v.UserId == userId && v.ReportId==reportId);
+            try
+            {
+                return _appDbContext.Vote.SingleOrDefault(v => v.UserId == userId && v.ReportId == reportId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
+            }
         }
 
         public void setVoted(Vote vote)
         {
-            var result = _appDbContext.Vote.SingleOrDefault(v => v.UserId == vote.UserId && v.ReportId == vote.ReportId);
-            if(result != null)
+            try
             {
-                result.vote = vote.vote;
-                _appDbContext.Entry(result).State = EntityState.Modified;
+                var result = _appDbContext.Vote.SingleOrDefault(v => v.UserId == vote.UserId && v.ReportId == vote.ReportId);
+                if (result != null)
+                {
+                    result.vote = vote.vote;
+                    _appDbContext.Entry(result).State = EntityState.Modified;
+                }
+                else
+                {
+                    _appDbContext.Vote.Add(vote);
+                }
+                _appDbContext.SaveChanges();
             }
-            else
+            catch (Exception ex)
             {
-                _appDbContext.Vote.Add(vote);
+                _logger.LogError(ex, ex.Message, ex.Data);
+                throw;
             }
-            _appDbContext.SaveChanges();
         }
     }
 }

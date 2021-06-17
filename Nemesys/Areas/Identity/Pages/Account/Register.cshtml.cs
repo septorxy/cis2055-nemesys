@@ -87,7 +87,7 @@ namespace Nemesys.Areas.Identity.Pages.Account
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {
-                        if(Input.UserName.Equals("septorxy") || Input.UserName.Equals("and"))
+                        if(Input.UserName.Equals("septorxy") || Input.UserName.Equals("and") || Input.UserName.Equals("Admin"))
                         {
                             _userManager.AddToRoleAsync(user, "Admin").Wait();
                         }
