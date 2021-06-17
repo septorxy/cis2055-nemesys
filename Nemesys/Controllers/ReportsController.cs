@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
@@ -16,11 +17,13 @@ namespace Nemesys.Controllers
     {   
         private readonly INemesysRepository _nemesysRepository;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public ReportsController(INemesysRepository nemesysRepository, UserManager<AppUser> userManager)
+        public ReportsController(INemesysRepository nemesysRepository, UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _nemesysRepository = nemesysRepository;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -181,6 +184,16 @@ namespace Nemesys.Controllers
                 _nemesysRepository.CreateReport(report);
                 var user = _nemesysRepository.GetUserByUsername(User.Identity.Name);
                 _nemesysRepository.UpdateTotalReports(user, 1);
+                var AllUsers = _nemesysRepository.GetAllUsers();
+                foreach(var aUser in AllUsers)
+                {
+                    var role = _userManager.GetRolesAsync(aUser);
+                    if (role.Equals("Investigator") || role.Equals("Admin"))
+                    {
+                        if(user != aUser)
+                            _emailSender.SendEmailAsync(aUser.Email, "Attention! A Report has been created", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the new report.<br>Sincerely,<br>The Admin Team");
+                    }
+                }
                 return RedirectToAction("Index");
             }
             else
