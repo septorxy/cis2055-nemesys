@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "CreateRole";
+    ViewData["Title"] = "Create Report";
 }
 
 @model Nemesys.ViewModels.EditReportViewModel
@@ -11,7 +11,10 @@
     <div class="form-group">
         <label asp-for="TypeId" class="col-md-2"></label>
         <div class="col-md-5">
-            <input asp-for="TypeId" class="form-control" />
+            <select asp-for="TypeId"
+                    asp-items="@(new SelectList(Model.TypeList,"Id","Name"))">
+                <option value="">Select a Type</option>
+            </select>
             <span asp-validation-for="TypeId" class="text-danger"></span>
         </div>
     </div>

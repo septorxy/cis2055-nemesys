@@ -12,7 +12,7 @@ namespace Nemesys.Models
         public string Description { get; set; }
         public DateTime DateOfAction { get; set; }
         public int ReportId { get; set; } 
-        public Report Report { get; set; }
+        public Report Report { get; set; }  
         public string UserId { get; set; }
         public AppUser User { get; set; }
     }   

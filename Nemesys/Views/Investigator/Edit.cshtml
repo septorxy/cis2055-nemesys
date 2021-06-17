@@ -20,6 +20,7 @@
         <img class="card-img-top" src="@Model.Report.PhotoUrl" alt="Image for @Model.Report.Type.Name" />
         <div class="card-body">
             <h3 class="card-title">Hazard Type: @Model.Report.Type.Name</h3>
+            <p class="card-text">Status: @Model.Report.Status.Name</p>
             <p class="card-text">@Model.Description</p>
             <p class="small">Hazard Found on: @Model.Report.HazardDate.ToShortDateString()</p>
             <p class="small">Submitted By @Model.Report.User.UserName on @Model.Report.ReportDate.ToShortDateString()</p>
@@ -34,6 +35,16 @@
                     <label asp-for="Description" class="control-label"></label>
                     <input asp-for="Description" class="form-control" />
                     <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StatusId" class="col-md-2"></label>
+                    <div class="col-md-5">
+                        <select asp-for="StatusId"
+                                asp-items="@(new SelectList(Model.StatusList,"Id","Name"))">
+                            <option value="">Select a Status</option>
+                        </select>
+                        <span asp-validation-for="StatusId" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="DateOfAction" class="control-label"></label>
