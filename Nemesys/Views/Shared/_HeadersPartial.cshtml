@@ -13,6 +13,14 @@
 
 <ul class="navbar-nav">
 
+    @if (role.Equals("Investigator") || role.Equals("Admin"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Investigator" asp-action="Assign">Investigations</a>
+        </li>
+
+    }
+
     @if (role.Equals("Admin"))
     {
         <li class="nav-item">
@@ -20,5 +28,7 @@
         </li>
 
     }
+
+
 
 </ul>

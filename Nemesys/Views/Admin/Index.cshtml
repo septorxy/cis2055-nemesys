@@ -3,31 +3,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link rel="stylesheet" href="~/css/admin.css" type="text/css" />
 <h1 class="create-title header-title">Admin Controls</h1>
 
-<div class="card">
-    <div class="card-body">
-        <a asp-action="CreateRole">Create Role</a>
-    </div>
+<div class="row">
+    <a disabled class="btn btn-primary admin-btn" asp-action="CreateRole">Create Role</a>
+    <a disabled class="btn btn-primary admin-btn" asp-action="Assign">Assign Role</a>
+    <a disabled class="btn btn-primary admin-btn" asp-action="CreateStatus">Create Status</a>
+    <a disabled class="btn btn-primary admin-btn" asp-action="CreateType">Create Type</a>
 </div>
-
-<div class="card">
-    <div class="card-body">
-        <a asp-action="Assign">Assign Role</a>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <a asp-action="CreateStatus">Create Status</a>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <a asp-action="CreateType">Create Type</a>
-    </div>
-</div>
-
 

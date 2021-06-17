@@ -4,10 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 class="header-title create-title">Create Role</h1>
 
-<h4>ProjectRole</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -25,6 +23,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">Back to list</a>
 </div>
 

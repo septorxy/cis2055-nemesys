@@ -4,27 +4,25 @@
     ViewData["Title"] = "Edit Invetigation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
-
-    <h4>Editing Investigation ID: @Model.Id</h4>
-    <hr />
+    <link rel="stylesheet" href="~/css/details.css" type="text/css" />
+    <h4 class="create-title header-title">Editing Investigation ID: @Model.Id</h4>
+    <h4 class="subheader">Submitted By @Model.Report.User.UserName on @Model.Report.ReportDate.ToShortDateString()</h4>
     <div class="card" style="width: 90%;padding:20px; margin:20px;">
-        <img class="card-img-top" src="@Model.Report.PhotoUrl" alt="Image for @Model.Report.Type.Name" />
-        <div class="card-body">
-            <h3 class="card-title">Hazard Type: @Model.Report.Type.Name</h3>
-            <p class="card-text">Status: @Model.Report.Status.Name</p>
-            <p class="card-text">@Model.Description</p>
-            <p class="small">Hazard Found on: @Model.Report.HazardDate.ToShortDateString()</p>
-            <p class="small">Submitted By @Model.Report.User.UserName on @Model.Report.ReportDate.ToShortDateString()</p>
-        </div>
+        @if (Model.Report.PhotoUrl != " /images/reports/")
+        {
+            <img class="card-img-top" src="@Model.Report.PhotoUrl" alt="Image for @Model.Report.Type.Name" />
+        }
+    <div class="card-body">
+        <h3 class="card-title">Hazard Type: @Model.Report.Type.Name</h3>
+        <p class="card-text">Status: @Model.Report.Status.Name</p>
+        <p class="card-text">@Model.Description</p>
+        <p class="small">Hazard Found on: @Model.Report.HazardDate.ToShortDateString()</p>
+        @if (Model.Report.User.PhoneNumber != null)
+        {
+            <p class="card-text">Reporter's Phone Number: @Model.Report.User.PhoneNumber</p>
+        }
+        
+    </div>
     </div>
     <div class="row">
         <div class="col-md-4">
@@ -37,8 +35,8 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="StatusId" class="col-md-2"></label>
-                    <div class="col-md-5">
+                    <label asp-for="StatusId"></label>
+                    <div>
                         <select asp-for="StatusId"
                                 asp-items="@(new SelectList(Model.StatusList,"Id","Name"))">
                             <option value="">Select a Status</option>
@@ -59,8 +57,6 @@
     </div>
 
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-primary">Back to list</a>
     </div>
 
-</body>
-</html>

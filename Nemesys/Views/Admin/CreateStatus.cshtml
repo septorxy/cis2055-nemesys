@@ -5,10 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>CreateStatus</h1>
+<h1 class="header-title create-title">Create Status</h1>
 
-<h4>Status</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateStatus">
@@ -26,6 +24,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">Back to list</a>
 </div>
 
