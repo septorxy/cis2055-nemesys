@@ -37,42 +37,42 @@ namespace Nemesys.Controllers
             try
             {
                 int currVote = 0;
-                var post = _nemesysRepository.GetReportById(id);
+                var report = _nemesysRepository.GetReportById(id);
                 var investigation = _nemesysRepository.GetInvestigationByReport(id);
-                Status currStatus = _nemesysRepository.GetStatusById(post.StatusId);
-                Models.Type currType = _nemesysRepository.GetTypeById(post.TypeId);
-                var getVote = _nemesysRepository.getVoted(post.Id, _userManager.GetUserId(User));
+                Status currStatus = _nemesysRepository.GetStatusById(report.StatusId);
+                Models.Type currType = _nemesysRepository.GetTypeById(report.TypeId);
+                var getVote = _nemesysRepository.getVoted(report.Id, _userManager.GetUserId(User));
                 if(getVote != null)
                 {
                     currVote = getVote.vote;
                 }
-                if (post == null)
+                if (report == null)
                     return NotFound();
                 else if (investigation != null)
                 {
                     var investigatorUser = _nemesysRepository.GetUserById(investigation.UserId);
                     var model = new ReportViewModel()
                     {
-                        Id = post.Id,
-                        ReportDate = post.ReportDate,
-                        HazardDate = post.HazardDate,
-                        Location = post.Location,
+                        Id = report.Id,
+                        ReportDate = report.ReportDate,
+                        HazardDate = report.HazardDate,
+                        Location = report.Location,
                         Type = new ListViewModel() {
                             Id = currType.Id,
                             Name = currType.Name
                         },
-                        Description = post.Description,
+                        Description = report.Description,
                         Status = new ListViewModel() {
                             Id = currStatus.Id,
                             Name = currStatus.Name
                         },
-                        PhotoUrl = post.PhotoUrl,
-                        Upvotes = post.Upvotes,
+                        PhotoUrl = report.PhotoUrl,
+                        Upvotes = report.Upvotes,
                         vote = currVote,
                         User = new UserViewModel()
                         {
-                            Id = post.UserId,
-                            UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
+                            Id = report.UserId,
+                            UserName = (_userManager.FindByIdAsync(report.UserId).Result != null) ? _userManager.FindByIdAsync(report.UserId).Result.UserName : "Anonymous"
                         },
                         Investigation = new ViewInvestigationViewModel
                         {
@@ -92,28 +92,28 @@ namespace Nemesys.Controllers
                 {
                     var model = new ReportViewModel()
                     {
-                        Id = post.Id,
-                        ReportDate = post.ReportDate,
-                        HazardDate = post.HazardDate,
-                        Location = post.Location,
+                        Id = report.Id,
+                        ReportDate = report.ReportDate,
+                        HazardDate = report.HazardDate,
+                        Location = report.Location,
                         Type = new ListViewModel()
                         {
                             Id = currType.Id,
                             Name = currType.Name
                         },
-                        Description = post.Description,
+                        Description = report.Description,
                         Status = new ListViewModel()
                         {
                             Id = currStatus.Id,
                             Name = currStatus.Name
                         },
-                        PhotoUrl = post.PhotoUrl,
+                        PhotoUrl = report.PhotoUrl,
                         vote = currVote,
-                        Upvotes = post.Upvotes,
+                        Upvotes = report.Upvotes,
                         User = new UserViewModel()
                         {
-                            Id = post.UserId,
-                            UserName = (_userManager.FindByIdAsync(post.UserId).Result != null) ? _userManager.FindByIdAsync(post.UserId).Result.UserName : "Anonymous"
+                            Id = report.UserId,
+                            UserName = (_userManager.FindByIdAsync(report.UserId).Result != null) ? _userManager.FindByIdAsync(report.UserId).Result.UserName : "Anonymous"
                         },
                         Investigation = new ViewInvestigationViewModel
                         {
@@ -133,7 +133,16 @@ namespace Nemesys.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
+            {
+                Id = t.Id,
+                Name = t.Name
+            }).ToList();
+            var model = new EditReportViewModel()
+            {
+                TypeList = typeList
+            };
+            return View(model);
         }
 
         [Authorize]
@@ -175,7 +184,15 @@ namespace Nemesys.Controllers
                 return RedirectToAction("Index");
             }
             else
+            {
+                var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                }).ToList();
+                newReport.TypeList = typeList;
                 return View(newReport);
+            }
         }
 
         [HttpGet]
@@ -185,6 +202,11 @@ namespace Nemesys.Controllers
             try
             {
                 var report = _nemesysRepository.GetReportById(id);
+                var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                }).ToList();
                 if (report != null)
                 {
                     //Check if the current user has access to this resource
@@ -198,18 +220,9 @@ namespace Nemesys.Controllers
                             Description = report.Description,
                             PhotoUrl = report.PhotoUrl,
                             HazardDate = report.HazardDate,
-                            Location = report.Location
+                            Location = report.Location,
+                            TypeList = typeList
                         };
-
-                        //Load all categories and create a list of CategoryViewModel
-                        //var categoryList = _nemesysRepository.GetAllCategories().Select(c => new CategoryViewModel()
-                        //{
-                        //    Id = c.Id,
-                        //    Name = c.Name
-                        //}).ToList();
-
-                        //Attach to view model - view will pre-select according to the value in CategoryId
-                        //model.CategoryList = categoryList;
 
                         return View(model);
                     }
@@ -279,15 +292,12 @@ namespace Nemesys.Controllers
                 }
                 else
                 {
-                    //Load all categories and create a list of CategoryViewModel
-                    //var categoryList = _nemesysRepository.GetAllCategories().Select(c => new CategoryViewModel()
-                    //{
-                       // Id = c.Id,
-                       // Name = c.Name
-                   // }).ToList();
-
-                    //Re-attach to view model before sending back to the View (this is necessary so that the View can repopulate the drop down and pre-select according to the CategoryId
-                    //editedReport.CategoryList = categoryList;
+                    var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
+                    {
+                        Id = t.Id,
+                        Name = t.Name
+                    }).ToList();
+                    editedReport.TypeList = typeList;
 
                     return View(editedReport);
                 }
@@ -317,12 +327,12 @@ namespace Nemesys.Controllers
                 {
 
                     System.IO.File.Delete(modelToDelete.PhotoUrl);
-                        _nemesysRepository.UpdateTotalReports(modelToDelete.User, -1);
-                        modelToDelete.User = null;
-                        modelToDelete.UserId = null;
-                        _nemesysRepository.DeleteReport(modelToDelete);
+                    _nemesysRepository.UpdateTotalReports(modelToDelete.User, -1);
+                    modelToDelete.User = null;
+                    modelToDelete.UserId = null;
+                    _nemesysRepository.DeleteReport(modelToDelete);
 
-                        return RedirectToAction("Index");
+                    return RedirectToAction("Index");
 
                    
                 }

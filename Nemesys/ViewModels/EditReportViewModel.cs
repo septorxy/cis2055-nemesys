@@ -20,11 +20,13 @@ namespace Nemesys.ViewModels
         [Required(ErrorMessage = "This field is required")]
         public DateTime HazardDate { get; set; }
 
-        public int TypeId { get; set; }
-
         public string PhotoUrl { get; set; }
         [Display(Name = "Image")]
         public IFormFile ImageToUpload { get; set; } //used only when submitting form
+
+        [Required(ErrorMessage = "This field is required")]
+        public int TypeId { get; set; }
+        public List<ListViewModel> TypeList { get; set; }
 
     }
 }
