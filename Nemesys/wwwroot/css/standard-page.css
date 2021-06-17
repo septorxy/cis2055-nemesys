@@ -1,0 +1,31 @@
+.header-title{
+	font-size: 55pt;
+	text-align: center;
+	padding-top: 150px;
+	color: #f95959;
+	font-family: "Courier New", Courier, monospace;
+}
+
+.paragraph{
+	text-align: justify;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 16pt;
+}
+
+.primary-subheader{
+	padding-top: 150px;
+	text-align: justify;
+	color: #fb8a8a;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 20pt;
+}
+
+.subheader{
+	padding-top: 25px;
+	text-align: justify;
+	color: #fb8a8a;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 20pt;
+}
+
+
