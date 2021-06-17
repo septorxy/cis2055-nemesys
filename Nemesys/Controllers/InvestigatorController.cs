@@ -47,6 +47,8 @@ namespace Nemesys.Controllers
                     ReportDate = report.ReportDate,
                     HazardDate = report.HazardDate,
                     Location = report.Location,
+                    Longitude = report.Longitude,
+                    Latitiude = report.Latitude,
                     Type = new ListViewModel()
                     {
                         Name = currStatus.Name
@@ -118,6 +120,8 @@ namespace Nemesys.Controllers
                     },
                     PhotoUrl = report.PhotoUrl,
                     Upvotes = report.Upvotes,
+                    Longitude = report.Longitude,
+                    Latitiude = report.Latitude,
                     User = new UserViewModel()
                     {
                         Id = report.UserId,
@@ -196,6 +200,8 @@ namespace Nemesys.Controllers
                             },
                             PhotoUrl = report.PhotoUrl,
                             Upvotes = report.Upvotes,
+                            Longitude = report.Longitude,
+                            Latitiude = report.Latitude,
                             User = new UserViewModel()
                             {
                                 Id = report.UserId,
@@ -269,6 +275,8 @@ namespace Nemesys.Controllers
                             Name = currStatus.Name
                         },
                         Description = report.Description,
+                        Longitude = report.Longitude,
+                        Latitiude = report.Latitude,
                         Status = new ListViewModel()
                         {
                             Name = currType.Name

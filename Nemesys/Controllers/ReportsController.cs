@@ -72,10 +72,12 @@ namespace Nemesys.Controllers
                         PhotoUrl = report.PhotoUrl,
                         Upvotes = report.Upvotes,
                         vote = currVote,
+                        Longitude = report.Longitude,
+                        Latitiude = report.Latitude,
                         User = new UserViewModel()
                         {
                             Id = report.UserId,
-                            UserName = (_userManager.FindByIdAsync(report.UserId).Result != null) ? _userManager.FindByIdAsync(report.UserId).Result.UserName : "Anonymous"
+                            UserName = _userManager.FindByIdAsync(report.UserId).Result.UserName
                         },
                         Investigation = new ViewInvestigationViewModel
                         {
@@ -111,12 +113,14 @@ namespace Nemesys.Controllers
                             Name = currStatus.Name
                         },
                         PhotoUrl = report.PhotoUrl,
+                        Longitude = report.Longitude,
+                        Latitiude = report.Latitude,
                         vote = currVote,
                         Upvotes = report.Upvotes,
                         User = new UserViewModel()
                         {
                             Id = report.UserId,
-                            UserName = (_userManager.FindByIdAsync(report.UserId).Result != null) ? _userManager.FindByIdAsync(report.UserId).Result.UserName : "Anonymous"
+                            UserName = _userManager.FindByIdAsync(report.UserId).Result.UserName
                         },
                         Investigation = new ViewInvestigationViewModel
                         {
@@ -150,15 +154,13 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
+        public IActionResult Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate, Longitude, Latitude")] EditReportViewModel newReport)
         {
             if (ModelState.IsValid)
             {
                 string fileName = "";
                 if (newReport.ImageToUpload != null)
                 {
-                    //At this point you should check size, extension etc...
-                    //Then persist using a new name for consistency (e.g. new Guid)
                     var extension = "." + newReport.ImageToUpload.FileName.Split('.')[newReport.ImageToUpload.FileName.Split('.').Length - 1];
                     fileName = Guid.NewGuid().ToString() + extension;
                     var path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + fileName;
@@ -178,7 +180,9 @@ namespace Nemesys.Controllers
                     StatusId = 1,
                     PhotoUrl = " /images/reports/" + fileName,
                     Upvotes = 0,
-                    UserId = _userManager.GetUserId(User)
+                    UserId = _userManager.GetUserId(User),
+                    Longitude = newReport.Longitude,
+                    Latitude = newReport.Latitude
                 };
 
                 _nemesysRepository.CreateReport(report);
@@ -204,6 +208,8 @@ namespace Nemesys.Controllers
                     Name = t.Name
                 }).ToList();
                 newReport.TypeList = typeList;
+                newReport.Longitude = 0;
+                newReport.Latitude = 0;
                 return View(newReport);
             }
         }
@@ -234,7 +240,9 @@ namespace Nemesys.Controllers
                             PhotoUrl = report.PhotoUrl,
                             HazardDate = report.HazardDate,
                             Location = report.Location,
-                            TypeList = typeList
+                            TypeList = typeList,
+                            Longitude = report.Longitude,
+                            Latitude = report.Latitude
                         };
 
                         return View(model);
@@ -254,7 +262,7 @@ namespace Nemesys.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, TypeId, Description, ImageToUpload, HazardDate, Location")] EditReportViewModel editedReport)
+        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id, TypeId, Description, ImageToUpload, HazardDate, Location, Longitude, Latitude")] EditReportViewModel editedReport)
         {
             try
             {
@@ -295,24 +303,31 @@ namespace Nemesys.Controllers
                         modelToUpdate.HazardDate = editedReport.HazardDate;
                         modelToUpdate.Location = editedReport.Location;
                         modelToUpdate.UserId = _userManager.GetUserId(User);
+                        modelToUpdate.Longitude = editedReport.Longitude;
+                        modelToUpdate.Latitude = editedReport.Latitude;
 
                         _nemesysRepository.UpdateReport(modelToUpdate);
 
                         return RedirectToAction("Index");
                     }
                     else
-                        return Unauthorized(); //or redirect to error controller with 401/403 actions
+                    {
+                        var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
+                        {
+                            Id = t.Id,
+                            Name = t.Name
+                        }).ToList();
+                        editedReport.TypeList = typeList;
+                        editedReport.Longitude = 0;
+                        editedReport.Latitude = 0;
+
+                        return View(editedReport);
+                    }
+                        
                 }
                 else
                 {
-                    var typeList = _nemesysRepository.GetAllTypes().Select(t => new ListViewModel()
-                    {
-                        Id = t.Id,
-                        Name = t.Name
-                    }).ToList();
-                    editedReport.TypeList = typeList;
-
-                    return View(editedReport);
+                    return View("Error");
                 }
             }
             catch (Exception ex)
@@ -338,7 +353,7 @@ namespace Nemesys.Controllers
                 var currentUser = await _userManager.GetUserAsync(User);
                 if (modelToDelete.User.Id == currentUser.Id || _userManager.GetRolesAsync(currentUser).Equals("Admin"))
                 {
-                    if (modelToDelete.PhotoUrl.Length > 1)
+                    if (!modelToDelete.PhotoUrl.Equals(" /images/reports/"))
                     {
                         String path = Directory.GetCurrentDirectory() + "\\wwwroot\\images\\reports\\" + Path.GetFileName(modelToDelete.PhotoUrl);
                         System.IO.File.Delete(path);

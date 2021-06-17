@@ -19,6 +19,8 @@ namespace Nemesys.ViewModels
         [Display(Name = "Image")]
         public string PhotoUrl { get; set;} 
         public int Upvotes { get; set; }
+        public double Longitude { get; set; }
+        public double Latitiude { get; set; }
         public int vote { get; set; }
         public UserViewModel User { get; set; }
         public ViewInvestigationViewModel Investigation { get; set; }

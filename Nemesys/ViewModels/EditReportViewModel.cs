@@ -21,6 +21,14 @@ namespace Nemesys.ViewModels
         [Required(ErrorMessage = "This field is required")]
         public DateTime HazardDate { get; set; }
 
+        [Required(ErrorMessage = "Field Required")]
+        [Range(34, 37)]
+        public double Latitude { get; set; }
+
+        [Required(ErrorMessage = "Field Required")]
+        [Range(13, 15)]
+        public double Longitude { get; set; }
+
         public string PhotoUrl { get; set; }
         [Display(Name = "Image")]
         public IFormFile ImageToUpload { get; set; } //used only when submitting form

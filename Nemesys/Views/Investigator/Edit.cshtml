@@ -17,11 +17,17 @@
         <p class="card-text">Status: @Model.Report.Status.Name</p>
         <p class="card-text">@Model.Description</p>
         <p class="small">Hazard Found on: @Model.Report.HazardDate.ToShortDateString()</p>
+        <div style="width: 100%" id="map"></div>
+        <input id="Longitude" type="hidden" value="@Model.Report.Longitude">
+        <input id="Latitude" type="hidden" value="@Model.Report.Latitiude">
+        <script src="~/js/UserMap.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwq7lLOpd5E_Mq4tefa6cWjPMobjUT3Rg&callback=initMap&libraries=&v=weekly" async></script>
+
         @if (Model.Report.User.PhoneNumber != null)
         {
-            <p class="card-text">Reporter's Phone Number: @Model.Report.User.PhoneNumber</p>
+        <p class="card-text">Reporter's Phone Number: @Model.Report.User.PhoneNumber</p>
         }
-        
+
     </div>
     </div>
     <div class="row">

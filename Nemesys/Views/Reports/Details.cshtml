@@ -16,6 +16,12 @@
             <p class="card-text">@Model.Description</p>
             <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
             <p class="small">Status: @Model.Status.Name <p>
+            <div style="width: 100%" id="map"></div>
+            <input id="Longitude" type="hidden" value="@Model.Longitude">
+            <input id="Latitude" type="hidden" value="@Model.Latitiude">
+            <script src="~/js/UserMap.js"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwq7lLOpd5E_Mq4tefa6cWjPMobjUT3Rg&callback=initMap&libraries=&v=weekly" async></script>
+ 
             @if (Model.vote == 0)
             {
                 <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>

@@ -80,11 +80,11 @@ namespace Nemesys.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateStatus(string name)
+        public IActionResult CreateStatus(string name)
         {
             Boolean exists = false;
             IEnumerable<Status> statuses = _nemesysRepository.GetAllStatuses();
-            foreach(Status status in statuses)
+            foreach (Status status in statuses)
             {
                 if (status.Name.Equals(name))
                 {
@@ -116,7 +116,7 @@ namespace Nemesys.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateType(string name)
+        public IActionResult CreateType(string name)
         {
             Boolean exists = false;
             IEnumerable<Models.Type> types = _nemesysRepository.GetAllTypes();
