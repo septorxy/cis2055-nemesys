@@ -150,7 +150,7 @@ namespace Nemesys.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
+        public async Task<IActionResult> Create([Bind("Description, TypeId, ImageToUpload, Location, HazardDate")] EditReportViewModel newReport)
         {
             if (ModelState.IsValid)
             {
@@ -184,16 +184,16 @@ namespace Nemesys.Controllers
                 _nemesysRepository.CreateReport(report);
                 var user = _nemesysRepository.GetUserByUsername(User.Identity.Name);
                 _nemesysRepository.UpdateTotalReports(user, 1);
-                var AllUsers = _nemesysRepository.GetAllUsers();
-                foreach(var aUser in AllUsers)
-                {
-                    var role = _userManager.GetRolesAsync(aUser);
-                    if (role.Equals("Investigator") || role.Equals("Admin"))
-                    {
-                        if(user != aUser)
-                            _emailSender.SendEmailAsync(aUser.Email, "Attention! A Report has been created", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the new report.<br>Sincerely,<br>The Admin Team");
-                    }
-                }
+                //var AllUsers = _nemesysRepository.GetAllUsers();
+                //foreach(var aUser in AllUsers)
+                //{
+                //    var role = await _userManager.GetRolesAsync(aUser);
+                //    if (role.Equals("Investigator") || role.Equals("Admin"))
+                //    {
+                //        if(user != aUser)
+                //            await _emailSender.SendEmailAsync(aUser.Email, "Attention! A Report has been created", $"Dear {report.User.UserName},<br>Please refer to <a href='https://universitynemesys.azurewebsites.net/Reports/Details/" + report.Id + "'>this link</a> to view the new report.<br>Sincerely,<br>The Admin Team");
+                //    }
+                //}
                 return RedirectToAction("Index");
             }
             else

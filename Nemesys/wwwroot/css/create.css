@@ -1,0 +1,31 @@
+.create-title{
+	padding-top: 30px;
+	padding-bottom: 30px; 
+}
+
+.form{
+	white-space: nowrap;
+	overflow: hidden;
+	text-align: center;
+
+}
+
+.col-md-2{
+	text-align: center;
+	color: #fb8a8a;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 17pt;
+}
+
+.col-md-5{
+	width: 50rem;
+	margin-left: 29%;
+}
+
+.form-group{
+	padding: 10px;
+}
+
+.form-control{
+	
+}

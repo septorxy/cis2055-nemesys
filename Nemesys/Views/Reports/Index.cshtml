@@ -4,19 +4,16 @@
     ViewData["Title"] = "Reports";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<h2>Showing @Model.TotalEntries Report entries</h2>
+<h1 class="header-title create-title">@ViewData["Title"]</h1>
 
 <div class="row">
     @foreach (var report in Model.Reports)
     {
-    <div class="card" style="width: 18rem;padding:20px; margin:20px;">
+    <div class="card">
         <div class="card-body">
             <h3 class="card-title">@report.Description</h3>
             <p class="small">@report.ReportDate.ToShortDateString() by @report.User.UserName</p>
         </div>
-        <img class="card-img-top" src="@report.PhotoUrl" alt="Image for @report.Description" />
         <a asp-controller="Reports" asp-action="Details" asp-route-id="@report.Id" class="btn btn-primary">Details</a>
         
     </div>
