@@ -2,45 +2,55 @@
 @model Nemesys.ViewModels.ReportViewModel
 @inject UserManager<AppUser> UserManager
 
-<h1>@Model.Type at  @Model.Location</h1>
-<div class="card" style="width: 90%;padding:20px; margin:20px;">
-    @if (Model.PhotoUrl != " /images/reports/")
-    {
-        <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type.Name" />
-    }
-    <div class="card-body">
-        <h3 class="card-title">Hazard Type: @Model.Type.Name</h3>
-        <p class="card-text">@Model.Description</p>
-        <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
-        <p class="small">Status: @Model.Status.Name <p>
-        <p class="small">Submitted By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</p>
-        @if (Model.vote == 0)
+    <link rel="stylesheet" href="~/css/details.css" type="text/css" />
+<h1 class="create-title header-title">@Model.Type.Name at  @Model.Location</h1>
+<h2 class="subheader">
+    Created By @Model.User.UserName on @Model.ReportDate.ToShortDateString()</h2>
+    <div class="card">
+        @if (Model.PhotoUrl != " /images/reports/")
         {
-            <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
+            <img class="card-img-top" src="@Model.PhotoUrl" alt="Image for @Model.Type.Name" />
         }
-        else if (Model.vote == -1)
-        {
-            <br /><a disabled class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
-        }
-        else
-        {
-            <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a disabled class="btn btn-primary">+</a>
-        }
+        <div class="card-body">
+            <h3 class="card-title">Hazard Type: @Model.Type.Name</h3>
+            <p class="card-text">@Model.Description</p>
+            <p class="small">Hazard Found on: @Model.HazardDate.ToShortDateString()</p>
+            <p class="small">Status: @Model.Status.Name <p>
+            @if (Model.vote == 0)
+            {
+                <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
+            }
+            else if (Model.vote == -1)
+            {
+                <br /><a disabled class="btn btn-primary">-</a> @Model.Upvotes <a asp-controller="Reports" asp-action="Upvote" asp-route-id="@Model.Id" class="btn btn-primary">+</a>
+            }
+            else
+            {
+                <br /><a asp-controller="Reports" asp-action="Downvote" asp-route-id="@Model.Id" class="btn btn-primary">-</a> @Model.Upvotes <a disabled class="btn btn-primary">+</a>
+            }
+        </div>
     </div>
-</div>
 
-<div>
-    @if(Model.Investigation.Id != -1)
-     {
-    <div class="card-body">
-        <h3 class="card-title">Investigation Id: @Model.Investigation.Id</h3>
-        <p class="card-text">@Model.Investigation.Description</p>
-        <p class="small">Hazard Investigated on: @Model.Investigation.DateOfAction.ToShortDateString()</p>
-        <p class="small">Last Edited by: @Model.Investigation.Investigator.UserName.
-        For more info contact them here: <a href="mailto:@Model.Investigation.Investigator.Email?subject=Regarding Investigation ID: @Model.Investigation.Id">@Model.Investigation.Investigator.Email</a></p>
-    </div>
-     }
-</div>
+    
+@if (Model.Investigation.Id != -1)
+ {
+    <h2 class="subheader">Investigation last edited by @Model.Investigation.Investigator.UserName</h2>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Investigation Id: @Model.Investigation.Id</h3>
+            <p class="card-text">@Model.Investigation.Description</p>
+            <p class="small">Hazard Investigated on: @Model.Investigation.DateOfAction.ToShortDateString()</p>
+            @if (Model.User.PhoneNumber != null)
+            {
+                <p class="card-text">Reporter's Phone Number: @Model.User.PhoneNumber</p>
+            }
+            <p class="small">
+                For more info contact them here: <a href="mailto:@Model.Investigation.Investigator.Email?subject=Regarding Investigation ID: @Model.Investigation.Id">@Model.Investigation.Investigator.Email</a>
+            </p>
+        </div>
+            </div>
+}
+
 
 <div>
     <a asp-controller="Reports" asp-action="Index" class="btn btn-primary">Back to list</a>
@@ -57,7 +67,10 @@
     }
     @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id || User.IsInRole("Admin"))
     {
-        <a asp-controller="Reports" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        @if (User.Identity.IsAuthenticated && UserManager.GetUserAsync(User).Result.Id == Model.User.Id)
+        {
+            <a asp-controller = "Reports" asp-action = "Edit" asp-route-id = "@Model.Id" class="btn btn-primary">Edit</a>
+        }
         <a asp-controller="Reports" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary">Delete</a>
     }
 

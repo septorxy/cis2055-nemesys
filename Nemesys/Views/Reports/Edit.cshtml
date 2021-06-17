@@ -1,8 +1,8 @@
 ﻿@model Nemesys.ViewModels.EditReportViewModel
 
-<h2>Edit Report</h2>
+<h2 class="create-title header-title">Edit Report</h2>
 
-<form asp-action="Edit" method="post" role="form" enctype="multipart/form-data">
+<form asp-action="Edit" method="post" role="form" enctype="multipart/form-data" class="form">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <input asp-for="Id" type="hidden" class="form-control" />
@@ -37,9 +37,11 @@
             <input type="date" asp-for="HazardDate" class="form-control" />
         </div>
     </div>
-    <div class="form-group">
-        <img src="@Model.PhotoUrl" class="col-md-2" />
-    </div>
+    @if (Model.PhotoUrl != " /images/reports/")
+    {   <div class="form-group">
+            <img src="@Model.PhotoUrl" alt="Image for Report" />
+        </div>
+    }
     <div class="form-group">
         <label asp-for="ImageToUpload" class="col-md-2"></label>
         <div class="col-md-5">

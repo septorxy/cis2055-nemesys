@@ -109,12 +109,12 @@ namespace Nemesys.Controllers
                     Location = report.Location,
                     Type = new ListViewModel()
                     {
-                        Name = currStatus.Name
+                        Name = currType.Name
                     },
                     Description = report.Description,
                     Status = new ListViewModel()
                     {
-                        Name = currType.Name
+                        Name = currStatus.Name
                     },
                     PhotoUrl = report.PhotoUrl,
                     Upvotes = report.Upvotes,

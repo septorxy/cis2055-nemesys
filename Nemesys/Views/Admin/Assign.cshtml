@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Assign</h1>
+<h1 class="header-title create-title">Assign Role</h1>
 
-<h4>Edit User Roles</h4>
-<hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Assign">
@@ -35,6 +34,6 @@
 </div>
 
 <div>
-    <a asp-controller="Admin" asp-action="Index">Back</a>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">Back to list</a>
 </div>
 
