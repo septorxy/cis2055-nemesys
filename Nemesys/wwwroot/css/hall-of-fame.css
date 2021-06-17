@@ -1,0 +1,16 @@
+.row{
+	padding-left: 4rem;
+}
+
+.card-body{
+	text-align: center;
+	color: white;
+	font-family: "Courier New", Courier, monospace;
+}
+
+.card{
+	background-color: #fb8a8a;
+	width: 18rem;
+	padding: 20px;
+	margin: 20px;
+}
