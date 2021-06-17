@@ -6,7 +6,8 @@
     <title>@ViewData["Title"] - Nemesys</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
+    <link rel="stylesheet" href="~/css/index.css" />
+
 </head>
 <body>
     <header>
@@ -28,17 +29,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Hall_Of_Fame">Hall of Fame</a>
                         </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+                        <li class="nav-item dropdown">
+                            <button type="button" class="btn navbar-btn dropdown-toggle" id="nav-dropdown-btn" data-toggle="dropdown">
                                 Reports
                             </button>
-                            
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Index">View Reports</a></li>
-                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Create">Create Reports</a></li>
-
-                            </ul>
-
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Reports" asp-action="Index">View Reports</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Reports" asp-action="Create">Create Report</a>
+                            </div>
                         </li>
                         <partial name="_HeadersPartial" />
                     </ul>

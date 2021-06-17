@@ -18,6 +18,11 @@ a {
   border-color: #1861ac;
 }
 
+#nav-dropdown-btn{
+  border: none;
+  color: yellow;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
