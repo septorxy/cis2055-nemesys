@@ -1,4 +1,7 @@
 ﻿@model Nemesys.ViewModels.EditReportViewModel
+@{
+    ViewData["Title"] = "Edit Report";
+}
 
 <h2 class="create-title header-title">Edit Report</h2>
 
@@ -43,7 +46,7 @@
         </div>
     </div>
     @if (Model.PhotoUrl != " /images/reports/")
-    {   <div class="form-group">
+    {<div class="form-group">
             <img src="@Model.PhotoUrl" alt="Image for Report" />
         </div>
     }

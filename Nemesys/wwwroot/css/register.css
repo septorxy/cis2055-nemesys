@@ -5,3 +5,9 @@
 .paragraph{
 	text-align: center;
 }
+
+.text-danger{
+	font-size: 10pt;
+	white-space: normal;
+	overflow:;
+}
